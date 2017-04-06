@@ -1,0 +1,25 @@
+{
+  "name": "sncf-bot",
+  "version": "1.0.0",
+  "description": "sncf bot POC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://alm.sncf.fr/sources/benjamin.heintz/etude-chatbot.git"
+  },
+  "keywords": [
+    "bot",
+    "node.js",
+    "botframework"
+  ],
+  "author": "benjamin.heintz@soprasteria.com",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.7.0",
+    "express": "^4.15.2"
+  }
+}

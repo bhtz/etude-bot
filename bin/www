@@ -1,0 +1,4 @@
+var Server = require('../app/server');
+
+let server = new Server();
+server.boot();
