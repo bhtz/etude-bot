@@ -1,4 +1,5 @@
 var express = require('express');
+var swig = require('swig');
 var HomeController = require('./controllers/home.controller');
 var BotController = require('./controllers/bot.controller');
 
@@ -9,6 +10,7 @@ module.exports = class Server {
 
     constructor() {
         this.app = express();
+        this.registerConfigurations();
         this.registerControllers();
     }
 
@@ -21,7 +23,14 @@ module.exports = class Server {
         this.app.use('/api', new BotController().router);
     }
 
-    boot(){
-        this.app.listen(this.port, ()=> console.log('application running'))
+    registerConfigurations() {
+        this.app.engine('html', swig.renderFile);
+        this.app.set('view engine', 'html');
+        this.app.set('views', __dirname + '/views');
+        swig.setDefaults({ cache: false });
+    }
+
+    boot() {
+        this.app.listen(this.port, () => console.log('application running'))
     }
 }

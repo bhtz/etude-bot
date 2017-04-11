@@ -8,6 +8,6 @@ module.exports = class HomeController {
     }
 
     home(req, res){
-        res.send('CHAT BOT SNCF');
+        res.render('home/home');
     }
 }
