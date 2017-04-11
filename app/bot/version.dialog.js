@@ -1,4 +1,5 @@
 var builder = require('botbuilder');
+var DataService = require('../services/dataService');
 
 module.exports = class VersionDialog {
 
