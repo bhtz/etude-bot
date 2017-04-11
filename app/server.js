@@ -13,7 +13,7 @@ module.exports = class Server {
     }
 
     get port() {
-        return process.env.port || 3000;
+        return process.env.PORT || 3000;
     }
 
     registerControllers() {
