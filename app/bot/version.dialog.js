@@ -24,8 +24,8 @@ module.exports = class VersionDialog {
             (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?')},
             (session, results) => { 
                 session.id = results.response; 
-                var idea = this.dataService.get(session.id);
-                session.send(idea.shortDescription); 
+                var idea = this.dataService.get(session.id)[0];
+                session.send('Le nom de votre mobil\idées est : ' + idea.name);
             }
         ]
     }
