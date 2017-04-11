@@ -31,6 +31,11 @@ module.exports = class VersionDialog {
     }
 
     default(){
-        return [(session, args, next) => { session.send('Bonjour je suis BOT DDSIM !')}];
+        return [
+            (session, args, next) => { 
+                session.send('Bonjour je suis BOT DDSIM !');
+                session.beginDialog('/id');
+            }
+        ];
     }
 }
