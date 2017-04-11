@@ -21,7 +21,7 @@ module.exports = class Server {
         this.app.use('/api', new BotController().router);
     }
 
-    boot() {
-        this.app.listen(this.port, () => console.log('application running'));
+    boot(){
+        this.app.listen(this.port, ()=> console.log('application running'))
     }
 }
