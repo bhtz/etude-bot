@@ -3,15 +3,15 @@ var builder = require('botbuilder');
 var VersionDialog = require('../bot/version.dialog');
 var DataService = require('../services/dataService');
 
-var connector = new builder.ChatConnector({
-    appId: 'aa8cbc27-5f99-431b-b14e-66bb5946b9e5',
-    appPassword: 'kyEx6XOnOn5yBFk6UDyoEQC'
-});
-
 // var connector = new builder.ChatConnector({
-//     appId: null,
-//     appPassword: null
+//     appId: 'aa8cbc27-5f99-431b-b14e-66bb5946b9e5',
+//     appPassword: 'kyEx6XOnOn5yBFk6UDyoEQC'
 // });
+
+var connector = new builder.ChatConnector({
+    appId: null,
+    appPassword: null
+});
 
 var bot = new builder.UniversalBot(connector);
 var dialog = new VersionDialog(bot);
