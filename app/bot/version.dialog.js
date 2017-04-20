@@ -2,17 +2,23 @@ var builder = require('botbuilder');
 var DataService = require('../services/dataService');
 var _ = require('lodash');
 
+var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/674aacbe-f3aa-4b51-bca9-07e394754424?subscription-key=69597c642a784c1383f2ced9c1d21bab&timezoneOffset=1.0&verbose=true&q=');
+
+/**
+ * 
+ */
 module.exports = class VersionDialog {
 
     constructor(bot) {
         this.bot = bot;
-        this.intents = new builder.IntentDialog();
+        this.intents = new builder.IntentDialog({ recognizers: [recognizer] });
         this.dataService = new DataService();
 
         this.bot.dialog('/', this.intents);
         this.bot.dialog('/id', this.id());
 
-        this.intents.matches(/^version/i, this.version());
+        this.intents.matches('version', this.version());
+        this.intents.matches('easter', this.easter());
         this.intents.onDefault(this.default());
     }
 
@@ -56,6 +62,14 @@ module.exports = class VersionDialog {
             (session, args, next) => {
                 session.send('Bonjour je suis BOT DDSIM !');
                 session.beginDialog('/id');
+            }
+        ];
+    }
+
+    easter() {
+        return [
+            (session, args, next) => {
+                session.send('Voyons voyons Boris tu m\'auras pas comme ca !');
             }
         ];
     }
