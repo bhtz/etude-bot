@@ -60,7 +60,7 @@ module.exports = class VersionDialog {
     default() {
         return [
             (session, args, next) => {
-                session.send('Bonjour je suis BOT DDSIM !');
+                session.send('Bonjour je suis MIA (Mobil\'Idée Assistant)!');
                 session.beginDialog('/id');
             }
         ];
@@ -69,7 +69,7 @@ module.exports = class VersionDialog {
     easter() {
         return [
             (session, args, next) => {
-                session.send('Voyons voyons Boris tu m\'auras pas comme ca !');
+                session.send('Vous me faîtes un peu peur ...');
             }
         ];
     }
