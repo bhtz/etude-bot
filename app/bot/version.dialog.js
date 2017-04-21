@@ -87,6 +87,6 @@ module.exports = class VersionDialog {
     }
 
     getPdfUrl(id) {
-        return 'http://pmm.mt.sncf.fr:11080/caasm-backoffice/projectWS/getPdf?id' + id + '&type=complet';
+        return 'http://pmm.mt.sncf.fr:11080/caasm-backoffice/projectWS/getPdf?id=' + id + '&type=complet';
     }
 }
