@@ -35,7 +35,8 @@ module.exports = class VersionDialog {
                 var idea = this.dataService.get(session.id)[0];
 
                 if (idea) {
-                    session.send('Votre mobil\idées est : [' + idea.name + '](https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id + ')');
+                    session.send('J\'ai trouvé votre mobil\idées :');
+                    session.send(this.sendLinkCard(session, idea));
 
                     var data = this.dataService.getAll();
                     _.map(data, (item) => {
