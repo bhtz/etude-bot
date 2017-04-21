@@ -33,20 +33,26 @@ module.exports = class VersionDialog {
             (session, results) => {
                 session.id = results.response;
                 var idea = this.dataService.get(session.id)[0];
-                session.send('Votre mobil\idées est : [' + idea.name+ '](https://mobilidees.mt.sncf.fr/#/proposals/'+ idea.id +')');
 
-                var data = this.dataService.getAll();
-                _.map(data, (item) => {
-                    choices[item.name] = { id: item.id };
-                });
-              
-                builder.Prompts.choice(session, "Ces mobil\idées sont fonctionnellement proche de la votre, entrez un numéro dans la liste ci-dessous: ", choices);
+                if (idea) {
+                    session.send('Votre mobil\idées est : [' + idea.name + '](https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id + ')');
+
+                    var data = this.dataService.getAll();
+                    _.map(data, (item) => {
+                        choices[item.name] = { id: item.id };
+                    });
+
+                    builder.Prompts.choice(session, "Ces mobil\'idées sont fonctionnellement proche de la votre, entrez un numéro dans la liste ci-dessous: ", choices);
+                } else {
+                    session.send('Aucune mobil\'idées ne possède cet ID !');
+                    session.endDialog();
+                }
             },
             (session, results) => {
                 var id = choices[results.response.entity].id;
                 var idea = this.dataService.get(id)[0];
                 session.choosenIdea = idea;
-                session.send('['+idea.name+'](https://mobilidees.mt.sncf.fr/#/proposals/'+ idea.id +')');
+                session.send('[' + idea.name + '](https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id + ')');
                 builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
             },
             (session, results) => {
