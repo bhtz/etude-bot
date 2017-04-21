@@ -39,12 +39,13 @@ module.exports = class VersionDialog {
                     choices[item.name] = { id: item.id };
                 });
                 console.log(choices[0]);
-                builder.Prompts.choice(session, "Connaissez vous ces mobil\idées ?", choices);
+                builder.Prompts.choice(session, "Ces mobil\idées sont fonctionnellement proche de la votre, selectionnez en une", choices);
             },
             (session, results) => {
                 var id = choices[results.response.entity].id;
                 var idea = this.dataService.get(id)[0];
                 session.choosenIdea = idea;
+                session.send('<a href="https://mobilidees.mt.sncf.fr/#/proposals/'+ idea.id +'"></a>');
                 builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
             },
             (session, results) => {
