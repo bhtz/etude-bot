@@ -8,11 +8,6 @@ var connector = new builder.ChatConnector({
     appPassword: 'kyEx6XOnOn5yBFk6UDyoEQC'
 });
 
-// var connector = new builder.ChatConnector({
-//     appId: null,
-//     appPassword: null
-// });
-
 var bot = new builder.UniversalBot(connector);
 var dialog = new VersionDialog(bot);
 
