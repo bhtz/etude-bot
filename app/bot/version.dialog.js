@@ -45,7 +45,7 @@ module.exports = class VersionDialog {
                 var id = choices[results.response.entity].id;
                 var idea = this.dataService.get(id)[0];
                 session.choosenIdea = idea;
-                session.send('<a href="https://mobilidees.mt.sncf.fr/#/proposals/'+ idea.id +'"></a>');
+                session.send('['+idea.name+'](https://mobilidees.mt.sncf.fr/#/proposals/'+ idea.id +'")');
                 builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
             },
             (session, results) => {
