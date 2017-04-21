@@ -54,8 +54,8 @@ module.exports = class VersionDialog {
                 session.choosenIdea = idea;
                 var pdfUrl = this.getPdfUrl(idea.id);
 
-                session.send('[' + idea.name + '](https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id + ')');
-                session.send('[PDF]('+ pdfUrl + ')');
+                session.send(this.sendLinkCard(session, idea));
+                session.send(this.sendPdfCard(session, idea));
 
                 builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
             },
@@ -88,5 +88,27 @@ module.exports = class VersionDialog {
 
     getPdfUrl(id) {
         return 'http://pmm.mt.sncf.fr:11080/caasm-backoffice/projectWS/getPdf?id=' + id + '&type=complet';
+    }
+
+    sendPdfCard(session, idea) {
+        return new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Download PDF")
+                    .subtitle(idea.name)
+                    .tap(builder.CardAction.openUrl(session, this.getPdfUrl(idea.id)))
+            ]);
+    }
+
+    sendLinkCard(session, idea) {
+        return new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Fiche mobil\'idees")
+                    .subtitle(idea.name)
+                    .tap(builder.CardAction.openUrl(session, 'https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id))
+            ]);
     }
 }
