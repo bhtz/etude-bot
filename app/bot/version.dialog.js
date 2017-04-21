@@ -15,7 +15,7 @@ module.exports = class VersionDialog {
         this.dataService = new DataService();
 
         this.bot.dialog('/', this.intents);
-        this.bot.dialog('/id', this.id());
+        this.bot.dialog('/id', this.mobilidee());
 
         this.intents.matches('version', this.version());
         this.intents.matches('easter', this.easter());
@@ -26,20 +26,21 @@ module.exports = class VersionDialog {
         return [(session) => session.send('Ma version est 1.0 !')]
     }
 
-    id() {
+    mobilidee() {
         var choices = {};
         return [
             (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?') },
             (session, results) => {
                 session.id = results.response;
                 var idea = this.dataService.get(session.id)[0];
-                session.send('Le nom de votre mobil\idées est : ' + idea.name);
+                session.send('Votre mobil\idées est : [' + idea.name+ '](https://mobilidees.mt.sncf.fr/#/proposals/'+ idea.id +')');
+
                 var data = this.dataService.getAll();
                 _.map(data, (item) => {
                     choices[item.name] = { id: item.id };
                 });
-                console.log(choices[0]);
-                builder.Prompts.choice(session, "Ces mobil\idées sont fonctionnellement proche de la votre, selectionnez en une", choices);
+              
+                builder.Prompts.choice(session, "Ces mobil\idées sont fonctionnellement proche de la votre, entrez un numéro dans la liste ci-dessous: ", choices);
             },
             (session, results) => {
                 var id = choices[results.response.entity].id;
@@ -50,7 +51,7 @@ module.exports = class VersionDialog {
             },
             (session, results) => {
                 if (results.response) {
-                    session.send('Nous allons contacter le propriétaire de cette mobil\idée !!');
+                    session.send('Nous allons contacter pour vous le propriétaire de cette mobil\idée !!');
                 } else {
                     session.send('C\'est noté, contactez nous pour vos besoins !');
                 }
