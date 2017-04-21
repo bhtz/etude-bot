@@ -52,7 +52,11 @@ module.exports = class VersionDialog {
                 var id = choices[results.response.entity].id;
                 var idea = this.dataService.get(id)[0];
                 session.choosenIdea = idea;
+                var pdfUrl = this.getPdfUrl(idea.id);
+
                 session.send('[' + idea.name + '](https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id + ')');
+                session.send('[PDF]('+ pdfUrl + ')');
+
                 builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
             },
             (session, results) => {
@@ -80,5 +84,9 @@ module.exports = class VersionDialog {
                 session.send('Vous me faîtes un peu peur ...');
             }
         ];
+    }
+
+    getPdfUrl(id) {
+        return 'http://pmm.mt.sncf.fr:11080/caasm-backoffice/projectWS/getPdf?id' + id + '&type=complet';
     }
 }
