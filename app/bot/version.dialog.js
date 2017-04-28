@@ -7,7 +7,7 @@ var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.micros
 /**
  * 
  */
-module.exports = class VersionDialog {
+module.exports = class MobilideeDialog {
 
     constructor(bot) {
         this.bot = bot;
@@ -52,7 +52,7 @@ module.exports = class VersionDialog {
             (session, results) => {
                 var id = choices[results.response.entity].id;
                 var idea = this.dataService.get(id)[0];
-                session.choosenIdea = idea;
+                session.userData.choosenIdea = idea;
                 var pdfUrl = this.getPdfUrl(idea.id);
 
                 session.send(this.sendLinkCard(session, idea));
@@ -62,7 +62,10 @@ module.exports = class VersionDialog {
             },
             (session, results) => {
                 if (results.response) {
-                    session.send('Nous allons contacter pour vous le propriétaire de cette mobil\idée !!');
+                    var name = session.userData.choosenIdea.user.firstName + ' ' + session.userData.choosenIdea.user.lastName;
+
+                    var msg = '[Contactez '+ name +'](mailto:'+ session.userData.choosenIdea.user.email +'&subject=Processus mobil\'idée)'
+                    session.send(msg);
                 } else {
                     session.send('C\'est noté, contactez nous pour vos besoins !');
                 }

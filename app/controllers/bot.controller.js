@@ -1,6 +1,6 @@
 var express = require('express');
 var builder = require('botbuilder');
-var VersionDialog = require('../bot/version.dialog');
+var MobilideeDialog = require('../bot/version.dialog');
 var DataService = require('../services/dataService');
 
 var connector = new builder.ChatConnector({
@@ -9,7 +9,7 @@ var connector = new builder.ChatConnector({
 });
 
 var bot = new builder.UniversalBot(connector);
-var dialog = new VersionDialog(bot);
+var dialog = new MobilideeDialog(bot);
 
 /**
  * 
