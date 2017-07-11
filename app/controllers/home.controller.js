@@ -1,13 +1,20 @@
 var express = require('express');
 
-module.exports = class HomeController {
+/**
+ * Home controller
+ */
+class HomeController {
 
-    constructor(){
+    constructor() {
         this.router = express.Router();
         this.router.get('/', this.home.bind(this));
     }
 
     home(req, res){
-        res.render('home/home');
+        res.send('Welcome to MIA !!');
     }
 }
+
+HomeController.baseUrl = '/';
+
+module.exports = HomeController;

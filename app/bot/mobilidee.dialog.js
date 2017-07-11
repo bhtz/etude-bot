@@ -5,7 +5,7 @@ var _ = require('lodash');
 var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/674aacbe-f3aa-4b51-bca9-07e394754424?subscription-key=69597c642a784c1383f2ced9c1d21bab&timezoneOffset=1.0&verbose=true&q=');
 
 /**
- * 
+ * Mobil'idée process dialog
  */
 module.exports = class MobilideeDialog {
 

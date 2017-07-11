@@ -1,6 +1,6 @@
 var express = require('express');
 var builder = require('botbuilder');
-var MobilideeDialog = require('../bot/version.dialog');
+var MobilideeDialog = require('../bot/mobilidee.dialog');
 var DataService = require('../services/dataService');
 
 var connector = new builder.ChatConnector({
@@ -12,9 +12,9 @@ var bot = new builder.UniversalBot(connector);
 var dialog = new MobilideeDialog(bot);
 
 /**
- * 
+ * ChatBot HTTP Endpoints controller
  */
-module.exports = class BotController {
+class BotController {
 
     constructor() {
         this.router = express.Router();
@@ -36,3 +36,7 @@ module.exports = class BotController {
         res.json(data);
     }
 }
+
+BotController.baseUrl = '/api';
+
+module.exports = BotController;

@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var data = require('../data/data.json');
+var data = require('./data/data.json');
 
 module.exports = class DataService {
 
