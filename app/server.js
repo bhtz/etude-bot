@@ -1,4 +1,5 @@
-var express = require('express');
+const express = require('express');
+const chalk = require('chalk');
 var BotController = require('./controllers/bot.controller');
 var HomeController = require('./controllers/home.controller');
 
@@ -22,11 +23,9 @@ module.exports = class Server {
         this.app.use(HomeController.baseUrl, new HomeController().router);
     }
 
-    registerConfigurations() {
-
-    }
+    registerConfigurations() {}
 
     boot() {
-        this.app.listen(this.port, () => console.log('application running on port: ' + this.port));
+        this.app.listen(this.port, () => console.log(chalk.green('MIA application running on port: ' + this.port)));
     }
 };

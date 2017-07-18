@@ -7,10 +7,14 @@ MIA (Mobil'idée Assistant)
 * NPM
 * Node 6.9.X
 
-# Installation
+# Install dependencies
 
         npm install
 
-# Run 
+# Running application
 
         npm start
+
+# Running test
+
+        npm test

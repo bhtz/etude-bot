@@ -1,6 +1,6 @@
+var _ = require('lodash');
 var builder = require('botbuilder');
 var DataService = require('../services/dataService');
-var _ = require('lodash');
 
 /**
  * Mobil'idée process dialog
