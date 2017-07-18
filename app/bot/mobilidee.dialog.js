@@ -22,13 +22,13 @@ module.exports = class MobilideeDialog {
     }
 
     version() {
-        return [(session) => session.send('Ma version est 1.0 !')]
+        return [(session) => session.send('Ma version est 1.0 !')];
     }
 
     mobilidee() {
         var choices = {};
         return [
-            (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?') },
+            (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?'); },
             (session, results) => {
                 session.id = results.response;
                 var idea = this.dataService.get(session.id)[0];
@@ -63,13 +63,13 @@ module.exports = class MobilideeDialog {
                 if (results.response) {
                     var name = session.userData.choosenIdea.user.firstName + ' ' + session.userData.choosenIdea.user.lastName;
 
-                    var msg = '[Contactez '+ name +'](mailto:'+ session.userData.choosenIdea.user.email +'&subject=Processus mobil\'idée)'
+                    var msg = '[Contactez '+ name +'](mailto:'+ session.userData.choosenIdea.user.email +'&subject=Processus mobil\'idée)';
                     session.send(msg);
                 } else {
                     session.send('C\'est noté, contactez nous pour vos besoins !');
                 }
             }
-        ]
+        ];
     }
 
     default() {
@@ -114,4 +114,4 @@ module.exports = class MobilideeDialog {
                     .tap(builder.CardAction.openUrl(session, 'https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id))
             ]);
     }
-}
+};

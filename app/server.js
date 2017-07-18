@@ -27,6 +27,6 @@ module.exports = class Server {
     }
 
     boot() {
-        this.app.listen(this.port, () => console.log('application running on port: ' + this.port))
+        this.app.listen(this.port, () => console.log('application running on port: ' + this.port));
     }
-}
+};

@@ -10,6 +10,6 @@ module.exports = class DataService {
     }
 
     get(id){
-        return _.filter(data, (item) => { return item.id == id });
+        return _.filter(data, (item) => { return item.id == id; });
     }
-}
+};
