@@ -1,0 +1,88 @@
+{
+    "document": {
+        "project": [
+            {
+                "id": "121",
+                "name": "IAM : Identification des Applications du Matériel  (ex Portail des applications)",
+                "projectStatus": {
+                    "id": "2",
+                    "status": "En production"
+                },
+                "user": {
+                    "id": "542",
+                    "username": "7710618G",
+                    "firstName": "Benoit",
+                    "lastName": "TRENTO",
+                    "email": "benoit.trento@sncf.fr",
+                    "technicenter": "DDSIM"
+                },
+                "domain": {
+                    "id": "499",
+                    "value": "Traction"
+                },
+                "creationDate": "2015-06-25 09:07:24.157",
+                "shortDescription": "Portail de recensement des applications locales du Matériel",
+                "score": "0.222"
+            },
+            {
+                "id": "215",
+                "name": "Appli de gestion des activités des caristes",
+                "projectStatus": {
+                    "id": "4",
+                    "status": "Prototype démarré"
+                },
+                "user": {
+                    "id": "950",
+                    "username": "8010503U",
+                    "firstName": "Vincent",
+                    "lastName": "KILINC",
+                    "email": "vincent.kilinc@sncf.fr",
+                    "technicenter": "TECHNICENTRE DE BISCHHEIM"
+                },
+                "domain": {
+                    "id": "2",
+                    "value": "Technicentre industriel"
+                },
+                "creationDate": "2015-09-14 14:18:19.2",
+                "shortDescription": "Gestion des activités des caristes: cartographie des zones d'intervention et demandes d'intervention des unités",
+                "score": "0.111"
+            },
+            {
+                "id": "251",
+                "name": "SICS - Suivi Informatisé des Cinq S",
+                "projectStatus": {
+                    "id": "5",
+                    "status": "Nouvelles"
+                },
+                "user": {
+                    "id": "1034",
+                    "username": "PJGD04882",
+                    "firstName": "Julien",
+                    "lastName": "GAGNARD",
+                    "email": "ext.ventoris.julien.gagnard@sncf.fr",
+                    "technicenter": "TECHNICENTRE DE NEVERS"
+                },
+                "domain": {
+                    "id": "2",
+                    "value": "Technicentre industriel"
+                },
+                "creationDate": "2015-09-17 09:19:46.747",
+                "shortDescription": "Suivi Informatisé des Cinq S",
+                "score": "0.111"
+            }
+        ],
+        "attr": {
+            "connector": "",
+            "context": "default",
+            "contextId": "8F150DD934105B3D53E89F17CBA8B793_default",
+            "fromStub": "false",
+            "fromcache": "false",
+            "generated": "Tue Jul 25 14:17:07 CEST 2017",
+            "project": "CaaSM_WS",
+            "sequence": "GetMatchingProjetcs_Sequence",
+            "signature": "1500985027939",
+            "transaction": "",
+            "version": "7.4.6 (build 43404)"
+        }
+    }
+}

@@ -37,7 +37,7 @@ module.exports = class MobilideeDialog {
                     session.send('J\'ai trouvé votre mobil\'idées :');
                     session.send(this.sendLinkCard(session, idea));
 
-                    var data = this.dataService.getAll();
+                    var data = this.dataService.getSimilar();
                     _.map(data, (item) => {
                         choices[item.name] = { id: item.id };
                     });

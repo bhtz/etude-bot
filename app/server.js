@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const chalk = require('chalk');
 var BotController = require('./controllers/bot.controller');
@@ -23,7 +24,9 @@ module.exports = class Server {
         this.app.use(HomeController.baseUrl, new HomeController().router);
     }
 
-    registerConfigurations() {}
+    registerConfigurations() {
+        this.app.use('/public', express.static(path.join(__dirname, '../', 'public')));
+    }
 
     boot() {
         this.app.listen(this.port, () => console.log(chalk.green('MIA application running on port: ' + this.port)));
