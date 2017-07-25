@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var builder = require('botbuilder');
-var DataService = require('../services/dataService');
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 /**
  * Mobil'idée process dialog
@@ -31,39 +32,50 @@ module.exports = class MobilideeDialog {
             (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?'); },
             (session, results) => {
                 session.id = results.response;
-                var idea = this.dataService.get(session.id)[0];
+                this.dataService.get(session.id).then((data) => {
+                    var idea = data.document.project;
 
-                if (idea) {
-                    session.send('J\'ai trouvé votre mobil\'idées :');
-                    session.send(this.sendLinkCard(session, idea));
+                    if (idea) {
+                        session.send('J\'ai trouvé votre mobil\'idées :');
+                        session.send(this.sendLinkCard(session, idea));
 
-                    var data = this.dataService.getSimilar();
-                    _.map(data, (item) => {
-                        choices[item.name] = { id: item.id };
-                    });
+                        this.dataService.getSimilar(session.id, 'pmmt10811', false, 3).then((data) => {
+                            _.map(data.document.project, (item) => {
+                                choices[item.name] = { id: item.id };
+                            });
 
-                    builder.Prompts.choice(session, "Ces mobil\'idées sont fonctionnellement proche de la votre, entrez un numéro dans la liste ci-dessous: ", choices);
-                } else {
-                    session.send('Aucune mobil\'idées ne possède cet ID !');
-                    session.endDialog();
-                }
+                            builder.Prompts.choice(session, "Ces mobil\'idées sont fonctionnellement proche de la votre, entrez un numéro dans la liste ci-dessous: ", choices);
+                        }).catch(function (err) {
+                            console.log(err);
+                            session.send(err);
+                        });
+                    } else {
+                        session.send('Aucune mobil\'idées ne possède cet ID !');
+                        session.endDialog();
+                    }
+                });
+
             },
             (session, results) => {
                 var id = choices[results.response.entity].id;
-                var idea = this.dataService.get(id)[0];
-                session.userData.choosenIdea = idea;
-                var pdfUrl = this.getPdfUrl(idea.id);
+                
+                this.dataService.get(id).then((data) => {
+                    console.log(data);
+                    var idea = data.document.project;
+                    session.userData.choosenIdea = idea;
+                    var pdfUrl = this.getPdfUrl(idea.id);
 
-                session.send(this.sendLinkCard(session, idea));
-                session.send(this.sendPdfCard(session, idea));
+                    session.send(this.sendLinkCard(session, idea));
+                    session.send(this.sendPdfCard(session, idea));
 
-                builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
+                    builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
+                });
             },
             (session, results) => {
                 if (results.response) {
                     var name = session.userData.choosenIdea.user.firstName + ' ' + session.userData.choosenIdea.user.lastName;
 
-                    var msg = '[Contactez '+ name +'](mailto:'+ session.userData.choosenIdea.user.email +'&subject=Processus mobil\'idée)';
+                    var msg = '[Contactez ' + name + '](mailto:' + session.userData.choosenIdea.user.email + '&subject=Processus mobil\'idée)';
                     session.send(msg);
                 } else {
                     session.send('C\'est noté, contactez nous pour vos besoins !');

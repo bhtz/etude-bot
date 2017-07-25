@@ -1,20 +1,30 @@
 var _ = require('lodash');
-var data = require('./data/data.json');
-var similar = require('./data/similar.json');
+var request = require('request-promise');
 
 module.exports = class DataService {
 
     constructor() { }
 
-    getAll() {
-        return data;
-    }
-
     get(id) {
-        return _.filter(data, (item) => { return item.id == id; });
+        var opts = {
+            uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=GetProject_Sequence',
+            qs: {id: id},
+            json: true
+        }
+        return request.get(opts);
     }
 
-    getSimilar(id) {
-        return similar.document.project;
+    getSimilar(id, cp, exclude, max) {
+        var opts = {
+            uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=GetMatchingProjetcs_Sequence',
+            qs: {
+                projectRefId: id,
+                max: max,
+                cp: cp,
+                excludeMarkedOff: exclude
+            },
+            json: true
+        }
+        return request.get(opts);
     }
 };
