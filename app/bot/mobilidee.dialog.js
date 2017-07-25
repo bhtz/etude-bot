@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var builder = require('botbuilder');
+var DataService = require('../services/dataService');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 

@@ -17,7 +17,6 @@ class BotController {
 
     constructor() {
         this.router = express.Router();
-        this.dataService = new DataService();
 
         this.router.post('/messages', connector.listen());
     }
