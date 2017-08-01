@@ -27,4 +27,9 @@ module.exports = class DataService {
         }
         return request.get(opts);
     }
+
+    update(cp, projectRefId, projectMatchId, comment, markoff){
+        var uri = 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=UpdateMarkOffProject_Sequence';
+        return request.post(uri, {cp: cp, projectRefId: projectRefId, projectMatchId: projectMatchId, comment: comment, markoff: markoff});
+    }
 };

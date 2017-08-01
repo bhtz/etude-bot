@@ -32,20 +32,24 @@ module.exports = class MobilideeDialog {
         return [
             (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?'); },
             (session, results) => {
-                session.id = results.response;
-                this.dataService.get(session.id).then((data) => {
+                session.userData.projectRedId = results.response;
+                this.dataService.get(session.userData.projectRedId).then((data) => {
                     var idea = data.document.project;
 
                     if (idea) {
                         session.send('J\'ai trouvé votre mobil\'idées :');
                         session.send(this.sendLinkCard(session, idea));
 
-                        this.dataService.getSimilar(session.id, 'pmmt10811', false, 3).then((data) => {
+                        session.send('Ces mobil\'idées sont fonctionnellement proche de la votre:');
+
+                        this.dataService.getSimilar(session.userData.projectRedId, 'pmmt10811', false, 3).then((data) => {
                             _.map(data.document.project, (item) => {
                                 choices[item.name] = { id: item.id };
+
+                                session.send(this.sendLinkCard(session, item));
                             });
 
-                            builder.Prompts.choice(session, "Ces mobil\'idées sont fonctionnellement proche de la votre, entrez un numéro dans la liste ci-dessous: ", choices);
+                            builder.Prompts.choice(session, "Selectionnez celle qui matche", choices);
                         }).catch(function (err) {
                             console.log(err);
                             session.send(err);
@@ -59,28 +63,19 @@ module.exports = class MobilideeDialog {
             },
             (session, results) => {
                 var id = choices[results.response.entity].id;
-                
+
                 this.dataService.get(id).then((data) => {
-                    console.log(data);
                     var idea = data.document.project;
-                    session.userData.choosenIdea = idea;
-                    var pdfUrl = this.getPdfUrl(idea.id);
+                    session.userData.matchIdea = idea;
 
-                    session.send(this.sendLinkCard(session, idea));
-                    session.send(this.sendPdfCard(session, idea));
-
-                    builder.Prompts.confirm(session, 'Voulez vous contacter le propriétaire de cette mobil\'idées ?');
+                    builder.Prompts.text(session, 'Pouvez vous nous donner votre commentaire sur la proximité fonctionnelle');
                 });
             },
             (session, results) => {
-                if (results.response) {
-                    var name = session.userData.choosenIdea.user.firstName + ' ' + session.userData.choosenIdea.user.lastName;
-
-                    var msg = '[Contactez ' + name + '](mailto:' + session.userData.choosenIdea.user.email + '&subject=Processus mobil\'idée)';
-                    session.send(msg);
-                } else {
-                    session.send('C\'est noté, contactez nous pour vos besoins !');
-                }
+                console.log('ref: ' + session.userData.projectRedId + ' match: ' + session.userData.matchIdea.id);
+                this.dataService.update('pmmt10811', session.userData.projectRedId, session.userData.matchIdea.id, "test", true).then(() => {
+                    session.send('Merci, nous avons pris en compte vos commentaires !');
+                }).catch(console.log);
             }
         ];
     }
@@ -122,8 +117,8 @@ module.exports = class MobilideeDialog {
             .textFormat(builder.TextFormat.xml)
             .attachments([
                 new builder.HeroCard(session)
-                    .title("Fiche mobil\'idees")
-                    .subtitle(idea.name)
+                    .title(idea.name)
+                    .subtitle("Fiche mobil\'idees")
                     .tap(builder.CardAction.openUrl(session, 'https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id))
             ]);
     }
