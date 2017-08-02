@@ -32,8 +32,8 @@ module.exports = class MobilideeDialog {
         return [
             (session) => { builder.Prompts.text(session, 'Quel est l\'ID de votre mobil\'idées ?'); },
             (session, results) => {
-                session.userData.projectRedId = results.response;
-                this.dataService.get(session.userData.projectRedId).then((data) => {
+                session.userData.projectRefId = results.response;
+                this.dataService.get(session.userData.projectRefId).then((data) => {
                     var idea = data.document.project;
 
                     if (idea) {
@@ -42,7 +42,7 @@ module.exports = class MobilideeDialog {
 
                         session.send('Ces mobil\'idées sont fonctionnellement proche de la votre:');
 
-                        this.dataService.getSimilar(session.userData.projectRedId, 'pmmt10811', false, 3).then((data) => {
+                        this.dataService.getSimilar(session.userData.projectRefId, 'pmmt10811', false, 3).then((data) => {
                             _.map(data.document.project, (item) => {
                                 choices[item.name] = { id: item.id };
 
@@ -72,9 +72,13 @@ module.exports = class MobilideeDialog {
                 });
             },
             (session, results) => {
-                console.log('ref: ' + session.userData.projectRedId + ' match: ' + session.userData.matchIdea.id);
-                this.dataService.update('pmmt10811', session.userData.projectRedId, session.userData.matchIdea.id, "test", true).then(() => {
-                    session.send('Merci, nous avons pris en compte vos commentaires !');
+                console.log('ref: ' + session.userData.projectRefId + ' match: ' + session.userData.matchIdea.id);
+                this.dataService.update('pmmt10811', session.userData.projectRefId, session.userData.matchIdea.id, "test", true).then((data) => {
+                    if(data.document.error){
+                        session.send(data.document.error.message);
+                    }else{
+                        session.send('Merci, nous avons pris en compte vos commentaires !');
+                    }
                 }).catch(console.log);
             }
         ];
@@ -119,7 +123,7 @@ module.exports = class MobilideeDialog {
                 new builder.HeroCard(session)
                     .title(idea.name)
                     .subtitle("Fiche mobil\'idees")
-                    .tap(builder.CardAction.openUrl(session, 'https://mobilidees.mt.sncf.fr/#/proposals/' + idea.id))
+                    .tap(builder.CardAction.openUrl(session, 'https://mobilidees-rec.mt.sncf.fr/#/proposals/' + idea.id))
             ]);
     }
 };

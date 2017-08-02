@@ -8,7 +8,7 @@ module.exports = class DataService {
     get(id) {
         var opts = {
             uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=GetProject_Sequence',
-            qs: {id: id},
+            qs: { id: id },
             json: true
         }
         return request.get(opts);
@@ -28,8 +28,13 @@ module.exports = class DataService {
         return request.get(opts);
     }
 
-    update(cp, projectRefId, projectMatchId, comment, markoff){
-        var uri = 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=UpdateMarkOffProject_Sequence';
-        return request.post(uri, {cp: cp, projectRefId: projectRefId, projectMatchId: projectMatchId, comment: comment, markoff: markoff});
+    update(cp, projectRefId, projectMatchId, comment, markoff) {
+        var options = {
+            method: 'POST',
+            uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=UpdateMarkOffProject_Sequence',
+            body: { cp: cp, projectRefId: projectRefId, projectMatchId: projectMatchId, comment: comment, markoff: markoff },
+            json: true // Automatically stringifies the body to JSON
+        };
+        return request.post(options);
     }
 };
