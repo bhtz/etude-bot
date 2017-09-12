@@ -23,7 +23,7 @@ module.exports = class TechnicalDialog {
                 new builder.HeroCard(session)
                     .title('Espace Conception Mobil\'idée')
                     .subtitle("Concrétisez vos idées d'applications mobiles du matériel ou liées aux technologies digitales")
-                    .tap(builder.CardAction.openUrl(session, 'http://espace-creation-mobilidees.mt.sncf.fr/edm/'));
+                    .tap(builder.CardAction.openUrl(session, 'http://espace-creation-mobilidees.mt.sncf.fr/edm/'))
             ]);
     }
 }
