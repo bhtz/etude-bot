@@ -1,3 +1,5 @@
+var builder = require('botbuilder');
+
 module.exports = class TechnicalDialog {
 
     constructor(bot, intents) {
@@ -8,6 +10,20 @@ module.exports = class TechnicalDialog {
     }
 
     dialog() {
-        return [(session) => session.send('Intention matché: technical_informations')];
+        return [(session) => {
+            session.send('Pour vos besoins technique nous avons prévus un portail permettant de vous aider :');
+            this.sendLinkCard();
+        }];
+    }
+
+    sendLinkCard(session) {
+        return new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title('Espace Conception Mobil\'idée')
+                    .subtitle("Concrétisez vos idées d'applications mobiles du matériel ou liées aux technologies digitales")
+                    .tap(builder.CardAction.openUrl(session, 'http://espace-creation-mobilidees.mt.sncf.fr/edm/'));
+            ]);
     }
 }
