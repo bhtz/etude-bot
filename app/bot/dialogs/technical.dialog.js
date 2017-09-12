@@ -12,7 +12,7 @@ module.exports = class TechnicalDialog {
     dialog() {
         return [(session) => {
             session.send('Pour vos besoins technique nous avons prévu un portail permettant de vous aider :');
-            this.sendLinkCard();
+            session.send(this.sendLinkCard(session));
         }];
     }
 
