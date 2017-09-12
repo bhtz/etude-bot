@@ -1,30 +1,15 @@
 var _ = require('lodash');
-var builder = require('botbuilder');
-var DataService = require('../services/dataService');
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+var DataService = require('../../services/dataService');
 
 /**
  * Mobil'idée process dialog
  */
 module.exports = class MobilideeDialog {
 
-    constructor(bot) {
+    constructor(bot, intents) {
         this.bot = bot;
-        this.recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/674aacbe-f3aa-4b51-bca9-07e394754424?subscription-key=69597c642a784c1383f2ced9c1d21bab&timezoneOffset=1.0&verbose=true&q=');
-        this.intents = new builder.IntentDialog({ recognizers: [this.recognizer] });
+        this.intents = intents;
         this.dataService = new DataService();
-
-        this.bot.dialog('/', this.intents);
-        this.bot.dialog('/id', this.mobilidee());
-
-        this.intents.matches('version', this.version());
-        this.intents.matches('easter', this.easter());
-        this.intents.onDefault(this.default());
-    }
-
-    version() {
-        return [(session) => session.send('Ma version est 1.0 !')];
     }
 
     mobilidee() {
@@ -80,23 +65,6 @@ module.exports = class MobilideeDialog {
                         session.send('Merci, nous avons pris en compte vos commentaires !');
                     }
                 }).catch(console.log);
-            }
-        ];
-    }
-
-    default() {
-        return [
-            (session, args, next) => {
-                session.send('Bonjour je suis MIA (Mobil\'Idée Assistant)!');
-                session.beginDialog('/id');
-            }
-        ];
-    }
-
-    easter() {
-        return [
-            (session, args, next) => {
-                session.send('Vous me faîtes un peu peur ...');
             }
         ];
     }

@@ -29,6 +29,6 @@ module.exports = class Server {
     }
 
     boot() {
-        this.app.listen(this.port, () => console.log(chalk.green('MIA application running on port: ' + this.port)));
+        this.app.listen(this.port, () => console.log(chalk.green('MIA HTTP server running on port: ' + this.port)));
     }
 };

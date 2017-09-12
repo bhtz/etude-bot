@@ -33,7 +33,7 @@ module.exports = class DataService {
             method: 'POST',
             uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=UpdateMarkOffProject_Sequence',
             body: { cp: cp, projectRefId: projectRefId, projectMatchId: projectMatchId, comment: comment, markoff: markoff },
-            json: true // Automatically stringifies the body to JSON
+            json: true
         };
         return request.post(options);
     }
