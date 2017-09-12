@@ -4,13 +4,14 @@ var ProcessDialog = require('./dialogs/process.dialog');
 var ProjectDialog = require('./dialogs/project.dialog');
 var TechnicalDialog = require('./dialogs/technical.dialog');
 var MobilideeDialog = require('./dialogs/mobilidee.dialog');
+var CreationDialog = require('./dialogs/creation.dialog');
 
 class MiaBot {
     
     constructor() {
-        var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/cac0a65b-9aa6-4a44-b22f-6edfbf41642a?subscription-key=4003a1ce79a243d9b1da9f4258f678e0&staging=true&timezoneOffset=0&verbose=true&q=');
+        var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/cac0a65b-9aa6-4a44-b22f-6edfbf41642a?subscription-key=4003a1ce79a243d9b1da9f4258f678e0&timezoneOffset=0&verbose=true&q=');
 
-        this.connector = new builder.ChatConnector({ appId: 'aa8cbc27-5f99-431b-b14e-66bb5946b9e5', appPassword: 'kyEx6XOnOn5yBFk6UDyoEQC' });
+        this.connector = new builder.ChatConnector({ appId: 'aa8cbc27-5f99-431b-b14e-66bb5946b9e5', appPassword: 'hqbwfEpRb2fMDE5JBudS6V0' });
         this.bot = new builder.UniversalBot(this.connector);
         this.intents = new builder.IntentDialog({ recognizers: [recognizer] });
         
@@ -23,6 +24,7 @@ class MiaBot {
         new ProcessDialog(this.bot, this.intents);
         new ProjectDialog(this.bot, this.intents);
         new TechnicalDialog(this.bot, this.intents);
+        new CreationDialog(this.bot, this.intents);
         //new MobilideeDialog(this.bot, this.intents);
     }
 
