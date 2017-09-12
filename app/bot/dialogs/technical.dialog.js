@@ -11,7 +11,7 @@ module.exports = class TechnicalDialog {
 
     dialog() {
         return [(session) => {
-            session.send('Pour vos besoins technique nous avons prévus un portail permettant de vous aider :');
+            session.send('Pour vos besoins technique nous avons prévu un portail permettant de vous aider :');
             this.sendLinkCard();
         }];
     }

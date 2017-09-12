@@ -11,7 +11,7 @@ class HomeController {
     }
 
     home(req, res){
-        res.send('Welcome to MIA 1.1.1 !!');
+        res.send('Welcome to MIA 1.1.2 !!');
     }
 }
 
