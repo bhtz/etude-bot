@@ -1,4 +1,5 @@
 var builder = require('botbuilder');
+var UtilsDialog = require('../utils/utils.dialog');
 
 module.exports = class TechnicalDialog {
 
@@ -12,18 +13,13 @@ module.exports = class TechnicalDialog {
     dialog() {
         return [(session) => {
             session.send('Pour vos besoins techniques nous avons prévu un portail permettant de vous aider :');
-            session.send(this.sendLinkCard(session));
+            var card = UtilsDialog.getLinkCard(
+                session, 
+                'Espace Conception Mobil\'idée', 
+                "Concrétisez vos idées d'applications mobiles du matériel ou liées aux technologies digitales", 
+                'http://espace-creation-mobilidees.mt.sncf.fr/edm/'
+            );
+            session.send(card);
         }];
-    }
-
-    sendLinkCard(session) {
-        return new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    .title('Espace Conception Mobil\'idée')
-                    .subtitle("Concrétisez vos idées d'applications mobiles du matériel ou liées aux technologies digitales")
-                    .tap(builder.CardAction.openUrl(session, 'http://espace-creation-mobilidees.mt.sncf.fr/edm/'))
-            ]);
     }
 }
