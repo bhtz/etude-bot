@@ -1,4 +1,5 @@
 var express = require('express');
+var pkg = require('../../package.json');
 
 /**
  * Home controller
@@ -10,8 +11,9 @@ class HomeController {
         this.router.get('/', this.home.bind(this));
     }
 
-    home(req, res){
-        res.send('Welcome to MIA 1.1.2 !!');
+    home(req, res) {
+        var msg = { application: 'com.ddsim.sncf.mia', version: 'pkg.version' };
+        res.json(msg);
     }
 }
 
