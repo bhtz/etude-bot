@@ -12,7 +12,7 @@ class HomeController {
     }
 
     home(req, res) {
-        var msg = { application: 'com.ddsim.sncf.mia', version: 'pkg.version' };
+        var msg = { application: 'com.ddsim.sncf.mia', version: pkg.version };
         res.json(msg);
     }
 }
