@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var builder = require('botbuilder');
 var DataService = require('../../services/dataService');
 
 /**

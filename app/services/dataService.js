@@ -28,6 +28,14 @@ module.exports = class DataService {
         return request.get(opts);
     }
 
+    getByTitle(title) {
+    
+    }
+
+    getByKeyWord(){
+        
+    }
+
     update(cp, projectRefId, projectMatchId, comment, markoff) {
         var options = {
             method: 'POST',

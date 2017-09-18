@@ -1,3 +1,5 @@
+var builder = require('botbuilder');
+
 module.exports = class ProjectDialog {
 
     constructor(bot, intents){
@@ -8,6 +10,11 @@ module.exports = class ProjectDialog {
     }
 
     dialog(){
-        return [(session) => session.send('Intention matché: project_informations')];
+        return [
+            (session, args, next) => {
+                var result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
+                session.send('intention: project_informations, entity: '+ result.entity);
+            }
+        ];
     }
 }

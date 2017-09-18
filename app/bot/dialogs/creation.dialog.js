@@ -11,15 +11,17 @@ module.exports = class CreationDialog {
     }
 
     dialog() {
-        return [(session) => {
-            session.send("Je vous invite à remplir le formulaire suivant pour renseigner votre mobil'idée");
-            var card = UtilsDialog.getLinkCard(
-                session,
-                'Portail Mobil\'idée',
-                "Nouvelle Mobil\'idée",
-                'http://mobilidees.mt.sncf.fr/#/propose'
-            );
-            session.send(card);
-        }];
+        return [
+            (session, results) => {
+                session.send("Je vous invite à remplir le formulaire suivant pour renseigner votre mobil'idée");
+                var card = UtilsDialog.getLinkCard(
+                    session,
+                    'Portail Mobil\'idée',
+                    "Nouvelle Mobil\'idée",
+                    'http://mobilidees.mt.sncf.fr/#/propose'
+                );
+                session.send(card);
+            }
+        ];
     }
 }
