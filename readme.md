@@ -4,8 +4,7 @@ MIA (Mobil'idée Assistant)
 
 # Requirements
 
-* NPM
-* Node 6.9.X
+[https://github.com/bhtz/etude-bot/wiki/Requirements](https://github.com/bhtz/etude-bot/wiki/Requirements)
 
 # Install dependencies
 
