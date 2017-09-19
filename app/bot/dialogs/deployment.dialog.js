@@ -11,32 +11,46 @@ module.exports = class DeploymentDialog {
     }
 
     dialog(){
-        var choices = {};
+        var envs = ['développement', 'pilote', 'production'];
         return [
             (session) => {
-                builder.Prompts.text(session, 'Désirez-vous des informations sur le déploiement d\'une application ?');
+                session.send('Le processus de déploiement d\'une application dépend de l\'environnement.');
+                builder.Prompts.choice(session, 'Quel environnement ciblez-vous ?', envs, { listStyle: builder.ListStyle.list });
             },
-            (session, results, next) => {
-                var response = results.response.toLowerCase();
-                if (response == 'oui') {
-                    next();
-                } else if (response == 'non') {
-                    session.endDialog();
-                } else {
-                    session.send('Je n\'ai pas compris pas votre réponse.');
-                    session.endDialog();
+            (session, results) => {
+                var response = results.response.entity;
+                switch (response) {
+                    case 'développement':
+                        session.send('En phase de développement, votre référent technique est habilité à déployer votre application sur la plateforme "DEVBOX".\n\nJe vous invite donc à vous rapprocher de votre référent technique.');
+                        session.send('Pour toute information complémentaire, n\'hésitez pas à contacter le support PMM.');
+                        this.sendSupportCard(session);
+                        break;
+                    case 'pilote':
+                        session.send('En phase pilote, vous devez effectuer une demande de déploiement sur la plateforme "SANDBOX".\n\nPour cela il faut utiliser le formulaire de demande d\'assistance sur le portail Mobil\'idées.');
+                        var card = UtilsDialog.getLinkCard(
+                            session,
+                            'Portail Mobil\'idées',
+                            'Demande d\'assistance',
+                            'https://mobilidees.mt.sncf.fr/#/assistance'
+                        );
+                        session.send(card);
+                        break;
+                    case 'production':
+                        session.send('Le déploiement d\'une application en production est réalisé uniquement par l\'équipe support PMM');
+                        this.sendSupportCard(session);
+                        break;
                 }
-            },
-            (session) => {
-                session.send('Alors le plus simple est de contacter le support PMM, voici la carte de visite.');
-                var card = UtilsDialog.getLinkCard(
-                    session,
-                    'Support PMM',
-                    '*PMM-Support <<PMM-support@sncf.fr>>',
-                    'mailto://PMM-support@sncf.fr'
-                );
-                session.send(card);
             }
         ];
+    }
+
+    sendSupportCard(session) {
+        var card = UtilsDialog.getLinkCard(
+            session,
+            'Support PMM',
+            '*PMM-Support <<PMM-support@sncf.fr>>',
+            'mailto://PMM-support@sncf.fr'
+        );
+        session.send(card);
     }
 }
