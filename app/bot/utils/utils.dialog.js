@@ -18,6 +18,27 @@ module.exports = class UtilsDialog {
                 new builder.HeroCard(session)
                     .title(title)
                     .subtitle(subtitle)
+                    .images([builder.CardImage.create(session, '')])
+                    .tap(builder.CardAction.openUrl(session, link))
+            ]);
+    }
+
+    /**
+     * Return Hero card with image
+     * @param {*} session 
+     * @param {*} title 
+     * @param {*} subtitle 
+     * @param {*} link 
+     * @param {*} imageUrl 
+     */
+    static getLinkCardWithImage(session, title, subtitle, link, imageUrl) {
+        return new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title(title)
+                    .subtitle(subtitle)
+                    .images([builder.CardImage.create(session, imageUrl)])
                     .tap(builder.CardAction.openUrl(session, link))
             ]);
     }
