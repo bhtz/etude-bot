@@ -29,11 +29,11 @@ module.exports = class DataService {
     }
 
     getByTitle(title) {
-    
+
     }
 
-    getByKeyWord(){
-        
+    getByKeyWord() {
+
     }
 
     update(cp, projectRefId, projectMatchId, comment, markoff) {
