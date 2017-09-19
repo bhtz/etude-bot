@@ -11,7 +11,7 @@ module.exports = class DefaultDialog {
     dialog() {
         return [(session) => {
             session.send(`Vous me faîtes un peu peur ... Voici une infos utile !`);
-            session.send(UtilsDialog.getLinkCard(
+            session.send(UtilsDialog.getLinkCardWithImage(
                 session, 
                 'Météo du jour', 
                 "Lyon, 69002",
