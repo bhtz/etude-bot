@@ -9,7 +9,7 @@ module.exports = class DefaultDialog {
 
     dialog() {
         return [(session) => { 
-            session.send(`Bonjour je suis MIA (Mobil\'Idée Assistant)! \n\n Posez moi vos questions, je me ferai une joie de vous répondre !`);
+            session.send(`Vous me faîtes un peu peur ...`);
         }];
     }
 }

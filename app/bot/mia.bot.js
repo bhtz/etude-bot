@@ -6,6 +6,7 @@ var TechnicalDialog = require('./dialogs/technical.dialog');
 var MobilideeDialog = require('./dialogs/mobilidee.dialog');
 var CreationDialog = require('./dialogs/creation.dialog');
 var DeploymentDialog = require('./dialogs/deployment.dialog');
+var WelcomeDialog = require('./dialogs/welcome.dialog');
 
 class MiaBot {
     
@@ -26,8 +27,9 @@ class MiaBot {
         new ProjectDialog(this.bot, this.intents);
         new TechnicalDialog(this.bot, this.intents);
         new CreationDialog(this.bot, this.intents);
-        //new MobilideeDialog(this.bot, this.intents);
+        new WelcomeDialog(this.bot, this.intents);
         new DeploymentDialog(this.bot, this.intents);
+        //new MobilideeDialog(this.bot, this.intents);
     }
 
     mount(){
