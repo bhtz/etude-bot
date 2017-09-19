@@ -26,7 +26,7 @@ module.exports = class TechnicalDialog {
                 'Accompagnement', 
                 "Espace Conception Mobil\'idée",
                 'http://espace-creation-mobilidees.mt.sncf.fr/edm/#/accompagnement',
-                'https://etude-bot.herokuapp.com/public/images/accompagnement.PNG'
+                'https://etude-bot.herokuapp.com/public/images/analyse.PNG'
             ));
 
             session.send('Vous fournir des socles techniques pour vous faire gagner du temps');
@@ -44,7 +44,7 @@ module.exports = class TechnicalDialog {
                 'Documentation', 
                 "Espace Conception Mobil\'idée", 
                 'http://espace-creation-mobilidees.mt.sncf.fr/edm/#/documentation',
-                'https://etude-bot.herokuapp.com/images/documentation.PNG'
+                'https://etude-bot.herokuapp.com/public/images/documentation.PNG'
             ));
         }];
     }
