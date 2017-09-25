@@ -2,7 +2,7 @@ var builder = require('botbuilder');
 
 module.exports = class UtilsDialog {
 
-    constructor(){}
+    constructor() { }
 
     /**
      * Return formated card
@@ -41,5 +41,12 @@ module.exports = class UtilsDialog {
                     .images([builder.CardImage.create(session, imageUrl)])
                     .tap(builder.CardAction.openUrl(session, link))
             ]);
+    }
+
+    /**
+     * get random number
+     */
+    static getRandom(low, high) { 
+        return Math.floor(Math.random() * (high - low + 1) + low);
     }
 }

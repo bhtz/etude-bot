@@ -10,7 +10,7 @@ module.exports = class DefaultDialog {
 
     dialog() {
         return [(session) => {
-            let num = this.getRandom(1, 4);
+            let num = UtilsDialog.getRandom(1, 4);
             switch (num) {
                 case 1:
                     this.weitherCard(session);
@@ -29,10 +29,6 @@ module.exports = class DefaultDialog {
                     break;
             }
         }];
-    }
-
-    getRandom(low, high) {
-        return Math.floor(Math.random() * (high - low + 1) + low);
     }
 
     weitherCard(session) {
