@@ -1,5 +1,7 @@
 var _ = require('lodash');
 var request = require('request-promise');
+var baseUrl = 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=';
+//var baseUrl = 'https://portail3.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=';
 
 module.exports = class DataService {
 
@@ -7,7 +9,7 @@ module.exports = class DataService {
 
     get(id) {
         var opts = {
-            uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=GetProject_Sequence',
+            uri: baseUrl+'GetProject_Sequence',
             qs: { id: id },
             json: true
         }
@@ -16,7 +18,7 @@ module.exports = class DataService {
 
     getSimilar(id, cp, exclude, max) {
         var opts = {
-            uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=GetMatchingProjetcs_Sequence',
+            uri: baseUrl+'GetMatchingProjetcs_Sequence',
             qs: {
                 projectRefId: id,
                 max: max,
@@ -29,7 +31,12 @@ module.exports = class DataService {
     }
 
     getByTitle(title) {
-
+        var opts = {
+            uri: baseUrl+'SearchProjects_Sequence',
+            qs: { q: title },
+            json: true
+        }
+        return request.get(opts);
     }
 
     getByKeyWord() {
@@ -39,7 +46,7 @@ module.exports = class DataService {
     update(cp, projectRefId, projectMatchId, comment, markoff) {
         var options = {
             method: 'POST',
-            uri: 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=UpdateMarkOffProject_Sequence',
+            uri: baseUrl+'UpdateMarkOffProject_Sequence',
             body: { cp: cp, projectRefId: projectRefId, projectMatchId: projectMatchId, comment: comment, markoff: markoff },
             json: true
         };
