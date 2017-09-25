@@ -1,13 +1,16 @@
 var builder = require('botbuilder');
+var DataService = require('../../services/dataService');
 
 module.exports = class ProjectDialog {
 
     constructor(bot, intents){
         this.bot = bot;
         this.intents = intents;
+        this.dataService = new DataService();
 
         // Main dialog
-        this.bot.dialog('mainDialog', this.mainDialog());
+        this.bot.dialog('mainDialogInfos', this.mainDialogInfos());
+        this.bot.dialog('mainDialogSearch', this.mainDialogSearch());
 
         // Sub dialogs
         this.bot.dialog('askForProjectName', this.askForProjectName());
@@ -15,7 +18,8 @@ module.exports = class ProjectDialog {
         this.bot.dialog('askForRestart', this.askForRestart());
 
         // Main dialog start up
-        this.intents.matches('project_informations', this.mainDialog());
+        this.intents.matches('project_informations', this.mainDialogInfos());
+        this.intents.matches('project_search', this.mainDialogSearch());
     }
 
     /**
@@ -38,18 +42,59 @@ module.exports = class ProjectDialog {
      */
     projectDetailDialog() {
         return [
-            (session) => {
+            /*(session) => {
                 // Voulez-vous voir le détail du projet?
                 builder.Prompts.confirm(session, 'Voulez-vous voir le détail du projet ['+ session.userData.projet +']?', {yes: 'Oui', no: 'Non'});
+            },*/
+            (session, params, next) => {
+                //if(params.response){
+                    // todo externaliser l'appel
+                    this.dataService.getByTitle(session.userData.projet)
+                    .then((data) => {
+                        var project = data.document.project;
+                        session.dialogData.choices = {};
+                        session.userData.currentProject = project;
+
+                        if(project){
+                            if(project.length>1){
+                                var projectList = '';
+                                session.send('J\'ai trouvé '+ project.length +' projets qui correspondent à \''+ session.userData.projet +'\':');
+                                project.forEach(function(item, index){
+                                    session.dialogData.choices[index] = {id: item.id, name: item.name};
+                                    projectList += (index+1) +' - '+ item.name +'\n\n';
+                                });
+                                session.send(projectList);
+                                session.dialogData.multi = true;
+                                builder.Prompts.confirm(session, 'Voulez-vous voir le détail de l\'un de ces projets?', {yes: 'Oui', no: 'Non'});
+                            } else {
+                                session.send('J\'ai trouvé le projet ['+ project.name +']!');
+                                session.dialogData.multi = false;
+                                builder.Prompts.confirm(session, 'Voulez-vous consulter le détail de ce projet?', {yes: 'Oui', no: 'Non'});
+                            }
+                        } else {
+                            session.send('Je n\'ai trouvé aucun projet correspondant à \''+ session.userData.projet +'\'...');
+                            session.endDialog();
+                        }
+                    });
+                /*} else{
+                    //session.send('Ok, passons à la suite!');
+                    session.endDialog();
+                }*/
             },
             (session, params, next) => {
                 if(params.response){
-                    session.send('Ok, voici le détail du projet ['+ session.userData.projet +']!');
-                    session.send('Todo...');
-                } else{
-                    //session.send('Ok, passons à la suite!');
+                    if(session.dialogData.multi) {
+                        builder.Prompts.number(session, 'Saisissez le numéro correspondant au projet que vous souhaitez consulter:');
+                    } else {
+                        next();
+                    }
+                }else {
+                    session.send('Comme vous voulez...');
+                    session.endDialog();
                 }
-
+            },
+            (session, params, next) => {
+                session.send('Voici le détail du projet du projet ['+session.dialogData.choices[parseInt(params.response)-1].name+']');
                 session.endDialog();
             }
         ];
@@ -71,9 +116,21 @@ module.exports = class ProjectDialog {
     }
 
     /**
-     * Dialog: Main dialog
+     * Dialog: Main dialog informations
      */
-    mainDialog() {
+    mainDialogSearch() {
+        return [
+            // >> Waterfall #1
+            (session) => {
+                session.send('Intention matché: project_search')
+            }
+        ];
+    }
+
+    /**
+     * Dialog: Main dialog informations
+     */
+    mainDialogInfos() {
         return [
             // >> Waterfall #1
             (session, args, next) => {
@@ -120,7 +177,7 @@ module.exports = class ProjectDialog {
            (session, args) => {
                if(args.response) {
                     // restart Main loop
-                    session.replaceDialog("mainDialog", { reprompt: true });
+                    session.replaceDialog("mainDialogInfos", { reprompt: true });
                } else {
                     // End of dialog
                     session.send('Fin de project.dialog!');
