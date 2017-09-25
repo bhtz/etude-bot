@@ -94,7 +94,11 @@ module.exports = class ProjectDialog {
                 }
             },
             (session, params, next) => {
-                session.send('Voici le détail du projet du projet ['+session.dialogData.choices[parseInt(params.response)-1].name+']');
+                if(session.dialogData.multi){
+                    session.send('Voici le détail du projet du projet ['+session.dialogData.choices[parseInt(params.response)-1].name+']');
+                }else{
+                    session.send('Voici le détail du projet du projet ['+session.userData.currentProject.name+']');
+                }
                 session.endDialog();
             }
         ];
