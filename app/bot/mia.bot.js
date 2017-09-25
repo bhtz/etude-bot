@@ -3,7 +3,6 @@ var DefaultDialog = require('./dialogs/default.dialog');
 var ProcessDialog = require('./dialogs/process.dialog');
 var ProjectDialog = require('./dialogs/project.dialog');
 var TechnicalDialog = require('./dialogs/technical.dialog');
-var MobilideeDialog = require('./dialogs/mobilidee.dialog');
 var CreationDialog = require('./dialogs/creation.dialog');
 var DeploymentDialog = require('./dialogs/deployment.dialog');
 var WelcomeDialog = require('./dialogs/welcome.dialog');
@@ -30,7 +29,6 @@ class MiaBot {
         new CreationDialog(this.bot, this.intents);
         new WelcomeDialog(this.bot, this.intents);
         new DeploymentDialog(this.bot, this.intents);
-        //new MobilideeDialog(this.bot, this.intents);
     }
 
     mount(){

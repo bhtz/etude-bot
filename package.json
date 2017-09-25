@@ -4,7 +4,7 @@
   "description": "sncf bot POC",
   "main": "index.js",
   "scripts": {
-    "start": "set MIA_RUNTIME_ENV='DEV' && node ./bin/www",
+    "start": "node ./bin/www",
     "serve": "set MIA_RUNTIME_ENV='DEV' && nodemon ./bin/www",
     "test": "jshint ./app"
   },
