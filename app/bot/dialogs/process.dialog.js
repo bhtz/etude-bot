@@ -33,6 +33,7 @@ module.exports = class ProcessDialog {
                     ));
                 } else {
                     session.send('C\'est noté, n\'hésitez pas !');
+                    session.say('C\'est noté, n\'hésitez pas !', 'beaucoup trop cool cortana');
                 }
             },
         ];
