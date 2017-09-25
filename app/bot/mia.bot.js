@@ -11,7 +11,8 @@ var WelcomeDialog = require('./dialogs/welcome.dialog');
 class MiaBot {
     
     constructor() {
-        var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/cac0a65b-9aa6-4a44-b22f-6edfbf41642a?subscription-key=4003a1ce79a243d9b1da9f4258f678e0&timezoneOffset=0&verbose=true&q=');
+        //var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/cac0a65b-9aa6-4a44-b22f-6edfbf41642a?subscription-key=4003a1ce79a243d9b1da9f4258f678e0&timezoneOffset=0&verbose=true&q=');
+        var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/cac0a65b-9aa6-4a44-b22f-6edfbf41642a?subscription-key=0781866b38c5464591e0868a46211cc5&timezoneOffset=0&verbose=true&q=');
 
         this.connector = new builder.ChatConnector({ appId: 'aa8cbc27-5f99-431b-b14e-66bb5946b9e5', appPassword: 'hqbwfEpRb2fMDE5JBudS6V0' });
         this.bot = new builder.UniversalBot(this.connector);
