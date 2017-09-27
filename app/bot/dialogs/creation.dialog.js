@@ -21,6 +21,7 @@ module.exports = class CreationDialog {
                 }
                 else{
                     session.userData.projet = theme;
+                    next();
                 }
             },
             (session, results) => {
