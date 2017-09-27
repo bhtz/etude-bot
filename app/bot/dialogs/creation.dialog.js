@@ -17,20 +17,20 @@ module.exports = class CreationDialog {
                 var theme = builder.EntityRecognizer.findEntity(args.entities, 'themeProjet');
 
                 if (!theme){
-                    builder.Prompts.text(session, "Oh une nouvelle idée, très bonne idée ! Peux tu me donner le titre que tu souhaites lui donner ?"); 
+                    builder.Prompts.text(session, "Oh une nouvelle idée, très bonne idée ! Quel serait le thème de cette nouvelle idée ?"); 
                 }
                 else{
                     session.userData.projet = theme;
                 }
             },
             (session, results) => {
-                if (results.response||theme) {
+                if (results.response||session.userData.projet) {
 
                     //Récupération du theme saisie
                     if (results.response) {
                         session.userData.projet = theme;
                     }
-                    
+
                     session.send("Il semble que j'ai ce qui pourrait être utile.");
                     session.send("J'ai préparé pour toi le formulaire de création de l'idée sur la thématique "+session.userData.projet);
                     var card = UtilsDialog.getLinkCard(
