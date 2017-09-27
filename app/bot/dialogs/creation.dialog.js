@@ -12,13 +12,27 @@ module.exports = class CreationDialog {
 
     dialog() {
         return [
-            (session) => { 
-                builder.Prompts.text(session, "Oh une nouvelle idée, très bonne idée ! Peux tu me donner le titre que tu souhaites lui donner ?"); 
+            (session, args) => { 
+                 // Get project name
+                var theme = builder.EntityRecognizer.findEntity(args.entities, 'themeProjet');
+
+                if (!theme){
+                    builder.Prompts.text(session, "Oh une nouvelle idée, très bonne idée ! Peux tu me donner le titre que tu souhaites lui donner ?"); 
+                }
+                else{
+                    session.userData.projet = theme;
+                }
             },
             (session, results) => {
-                if (results.response) {
+                if (results.response||theme) {
+
+                    //Récupération du theme saisie
+                    if (results.response) {
+                        session.userData.projet = theme;
+                    }
+                    
                     session.send("Il semble que j'ai ce qui pourrait être utile.");
-                    session.send("J'ai préparé pour toi le formulaire de création de l'idée sur la thématique "+results.response);
+                    session.send("J'ai préparé pour toi le formulaire de création de l'idée sur la thématique "+session.userData.projet);
                     var card = UtilsDialog.getLinkCard(
                         session,
                         'Portail Mobil\'idée',
