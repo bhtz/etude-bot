@@ -21,12 +21,14 @@ module.exports = class CreationDialog {
                 }
                 else{
                     session.userData.projet = theme;
+                    session.send("je suis dans le next du theme");
                     next();
                 }
             },
             (session, results) => {
+                session.send("je suis dans la partie 2");
                 if (results.response||session.userData.projet) {
-
+                    session.send("je suis dans le si");
                     //Récupération du theme saisie
                     if (results.response) {
                         session.userData.projet = theme;
