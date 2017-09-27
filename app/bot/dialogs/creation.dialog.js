@@ -38,7 +38,7 @@ module.exports = class CreationDialog {
             },
             (session, results) => {
                 if (results.response) { 
-                    session.beginDialog('mainDialogSearch');
+                    session.beginDialog('projectDetailDialog');
                 }
                 else{
                     session.send("C'est noté, n'hésite pas à venir me revoir si besoin !");
