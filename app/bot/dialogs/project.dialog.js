@@ -1,39 +1,48 @@
 var builder = require('botbuilder');
 var util = require('util');
+var dateFormat = require('dateformat');
 
 var UtilsDialog = require('../utils/utils.dialog');
 var DataService = require('../../services/dataService');
 
 var quests = {  askForProjectName: [
                     'Quel projet recherchez-vous?',
-                    'Quel est le nom du projet que vous recherchez?',
-                    'Saisissez le nom du projet que vous recherchez.',
+                    'Quelle mobil\'idée recherchez-vous?',
+                    'Quel est le nom du projet que vous cherchez?',
+                    'Saisissez le nom du projet que vous aimeriez consulter.',
                     'Précisez le nom du projet que vous souhaitez consulter.',
-                    'De quel projet s\'agit-il?'
-                ],
+                    'De quel projet s\'agit-il?',
+                    'De quelle mobil\'idée s\'agit-il?'],
                 askForRestart: [
                     'Voulez-vous effectuer une nouvelle recherche?', 
-                    'Voulez-vous rechercher un autre projet?'],
+                    'Voulez-vous rechercher un autre projet?',
+                    'Souhaitez-vous consulter une autre mobil\'idée?'],
                 projectDetailDialog: {
                     found: {
-                        simple: ['J\'ai trouvé la référence [%s]!'],
-                        multi: ['J\'ai trouvé %s références qui correspondent à \'%s\':']
+                        simple: [
+                            'J\'ai trouvé la référence [%s]!',
+                            'J\'ai identifié une mobil\'idée correspondant à vos citères [%s]'],
+                        multi: [
+                            'J\'ai trouvé %s références qui correspondent à \'%s\':',
+                            'J\'ai identifié %s références pour \'%s\':']
                     },
-                    notFound: ['Je n\'ai trouvé aucune référence correspondant à \'%s\'...',
-                                'Je n\'ai malheureusement pas trouvé de correspondance pour \'%s\'...'],
+                    notFound: [
+                        'Je n\'ai trouvé aucune référence correspondant à \'%s\'...',
+                        'Je n\'ai malheureusement pas trouvé de correspondance pour \'%s\'...',
+                        'Je ne trouve pas de mobil\'idée pertinente en rapport avec \'%s\''],
                     ask: {
                         simple: [
                                     'Voulez-vous consulter le détail de ce projet?',
-                                    'Souhaitez-vous voir le détail du projet?'
-                        ],
+                                    'Souhaitez-vous voir le détail du projet?',
+                                    'Souhaitez-vous consulter cette mobil\'idée?'],
                         multi: [
                                 'Voulez-vous voir le détail de l\'un de ces projets?',
-                                'Voulez-vous consulter l\'un de ces projets?'
-                        ]
+                                'Voulez-vous consulter l\'un de ces projets?',
+                                'Souhaitez-vous consulter l\'une de ces mobil\'idées?']
                     }, 
                     choice: [
-                        'Saisissez le numéro correspondant au projet que vous souhaitez consulter.'
-                    ],
+                        'Saisissez le numéro correspondant au projet que vous souhaitez consulter.',
+                        'Quel est le numéro de la mobil\'idée que vous voulez voir?'],
                     show: ['Voici le détail du projet du projet [%s]'],
                     agree: [
                         'Comme vous voulez...',
@@ -131,11 +140,17 @@ module.exports = class ProjectDialog {
 
             // >> Waterfall #3
             (session, params, next) => {
-                let text = this.getRandomText(quests.projectDetailDialog.show);
                 if(session.dialogData.multi){
-                    session.send(util.format(text, session.dialogData.choices[parseInt(params.response)-1].name));
+
+                    if(parseInt(params.response)>0 && parseInt(params.response)<=Object.keys( session.dialogData.choices ).length) {
+                        this.sendProjectDetail(session, session.dialogData.choices[parseInt(params.response)-1]);
+                        session.userData.dontAsk = false;
+                    } else {
+                        session.send('Votre saisie n\'est pas valide...');
+                        session.userData.dontAsk = true;
+                    }
                 }else{
-                    session.send(util.format(text, session.userData.currentProject.name));
+                    this.sendProjectDetail(session, session.userData.currentProject);
                 }
                 session.endDialog();
             }
@@ -212,14 +227,18 @@ module.exports = class ProjectDialog {
            },
 
            // >> Waterfall #3
-           (session, args) => {
+           (session, args, next) => {
                 // Ask for restart
-                session.beginDialog('askForRestart');
+                if(!session.userData.dontAsk) {
+                    session.beginDialog('askForRestart');
+                }else {
+                    next();
+                }
            },
 
            // >> Waterfall #4
            (session, args) => {
-               if(args.response) {
+               if(args.response || session.userData.dontAsk) {
                     // restart Main loop
                     session.replaceDialog("mainDialogInfos", { reprompt: true });
                } else {
@@ -253,12 +272,13 @@ module.exports = class ProjectDialog {
             session.send(util.format(text, project.length, session.userData.projet));
 
             project.forEach(function(item, index){
-                session.dialogData.choices[index] = {id: item.id, name: item.name};
+                //session.dialogData.choices[index] = {id: item.id, name: item.name};
+                session.dialogData.choices[index] = item;
                 projectList += (index+1) +' - '+ item.name +'\n\n';
             });
 
-            session.send(projectList);
             session.dialogData.multi = true;
+            session.send(projectList);
             text = this.getRandomText(quests.projectDetailDialog.ask.multi);
             builder.Prompts.confirm(session, text, {yes: 'Oui', no: 'Non'});
         } else {
@@ -270,5 +290,27 @@ module.exports = class ProjectDialog {
             text = this.getRandomText(quests.projectDetailDialog.ask.simple);
             builder.Prompts.confirm(session, text, {yes: 'Oui', no: 'Non'});
         }
+    }
+
+    /**
+     * 
+     * @param {*} session 
+     * @param {*} project 
+     */
+    sendProjectDetail(session, project) {
+        let text = this.getRandomText(quests.projectDetailDialog.show) + ':';
+        session.send(util.format(text, project.name));
+
+        text = 'Description: ' + project.shortDescription + '\n\n';
+        text += 'Propriétaire de l\'idée: ' + project.user.firstName + ' ' + project.user.lastName + '\n\n';
+        text += 'Date de création de l\'idée: ' + dateFormat(project.creationDate, "dd/mm/yyyy hh:MM:ss");
+
+        var card = UtilsDialog.getLinkCard(
+            session,
+            project.name,
+            text,
+            'https://mobilidees.mt.sncf.fr/#/proposals/'+project.id
+        );
+        session.send(card);
     }
 }
