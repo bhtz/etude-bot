@@ -12,49 +12,45 @@ module.exports = class CreationDialog {
 
     dialog() {
         return [
-            (session, args) => { 
+            (session, args, next) => { 
                  // Get project name
                 var theme = builder.EntityRecognizer.findEntity(args.entities, 'themeProjet');
+               
+                //Récupération de l'entity saisie
+                var themeIdee = session.dialogData.themeIdee = {
+                    theme: theme ? theme.entity : null,
+                  };
 
-                //if (!theme){
+                if (!themeIdee.theme){
                     builder.Prompts.text(session, "Oh une nouvelle idée, très bonne idée ! Quel serait le thème de cette nouvelle idée ?"); 
-                /*}
+                }
                 else{
-                    session.userData.projet = theme;
-                    session.send("je suis dans le next du theme");
                     next();
-                }*/
+                }
             },
-            (session, results) => {
+            (session, results, next) => {
                 //if (results.response||session.userData.projet) {
+                var themeIdee = session.dialogData.themeIdee;
+
                 if (results.response) {
-                    //Récupération du theme saisie
-                    /*if (results.response) {
-                        session.userData.projet = results.response;
-                    }*/
-
-                    session.send("Il semble que j'ai ce qui pourrait être utile.");
-                    session.send("J'ai préparé pour toi le formulaire de création de l'idée sur la thématique "+results.response);
-                    var card = UtilsDialog.getLinkCard(
-                        session,
-                        'Portail Mobil\'idée',
-                        "Nouvelle Mobil\'idée",
-                        'http://mobilidees.mt.sncf.fr/#/propose'
-                    );
-                    session.send(card);
-
-                    builder.Prompts.confirm(session, "Avant d'ajouter l'idée, si besoin je peux t'aider à savoir si une idée ou une application n'existe pas déjà, ça t'intéresse ?", { yes: 'Oui', no: 'Non' });
-                    session.userData.projet = results.response;
-                   
+                    themeIdee.theme = results.response;
                 }
-                else{
-                    session.send("Tant pis, mais n'hésite pas à revenir vers moi si tu souhaites des informations");
-                    session.endDialog();
-                }
+
+                session.send("Il semble que j'ai ce qui pourrait t'être utile.<br/> J'ai préparé pour toi le formulaire de création de l'idée sur la thématique \""+themeIdee.theme+"\"");
+                var card = UtilsDialog.getLinkCard(
+                    session,
+                    'Portail Mobil\'idée',
+                    "Nouvelle Mobil\'idée",
+                    'http://mobilidees.mt.sncf.fr/#/propose'
+                );
+                session.send(card);
+
+                builder.Prompts.confirm(session, "Avant d'ajouter l'idée, si besoin je peux t'aider à savoir si une idée ou une application n'existe pas déjà, ça t'intéresse ?", { yes: 'Oui', no: 'Non' });
+                session.userData.projet = themeIdee.theme;
             },
             (session, results) => {
                 if (results.response) { 
-                    session.beginDialog('projectDetailDialog');
+                    session.beginDialog('mainDialogInfos');
                 }
                 else{
                     session.send("C'est noté, n'hésite pas à venir me revoir si besoin !");
