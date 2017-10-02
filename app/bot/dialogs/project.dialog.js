@@ -193,15 +193,23 @@ module.exports = class ProjectDialog {
         return [
             // >> Waterfall #1
             (session, args, next) => {
-                
+
                 // Get project name
-                let result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
+                let result = null;
+                if (args) {
+                    session.userData.projet = null;
+                    result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
+                }
 
                 // Prompt for projet
-                if (!result) {
+                if(session.userData.projet) {
+                    console.log('[DEBUG] There\'s a project in userData!');
+                    next();
+                }else if (!result) {
+                    console.log('[DEBUG] There\'s not project in userData and no identify entity!');
                     session.beginDialog('askForProjectName');
                 } else {
-                    // Store project name
+                    console.log('[DEBUG] There\'s a project in entity!');
                     session.userData.projet = result.entity
                     next();
                 }
@@ -215,7 +223,7 @@ module.exports = class ProjectDialog {
                     session.userData.projet = args.response;
                 }
 
-                // Prompt for the text of the note
+                // Prompt for project name
                 if (!session.userData.projet) {
                     //Quel est le nom du projet que vous recherchez?
                     let text = this.getRandomText(quests.askForProjectName);
@@ -239,6 +247,7 @@ module.exports = class ProjectDialog {
            // >> Waterfall #4
            (session, args) => {
                if(args.response || session.userData.dontAsk) {
+                    session.userData.projet = null;
                     // restart Main loop
                     session.replaceDialog("mainDialogInfos", { reprompt: true });
                } else {
