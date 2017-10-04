@@ -36,12 +36,14 @@ module.exports = class CreationDialog {
                     themeIdee.theme = results.response;
                 }
 
-                session.send("Il semble que j'ai ce qui pourrait t'être utile.<br/> J'ai préparé pour toi le formulaire de création de l'idée sur la thématique \""+themeIdee.theme+"\"");
+                session.send("Il semble que j'ai ce qui pourrait t'être utile.<br/> J'ai préparé pour toi le formulaire de création de l'idée sur "+
+                                "la thématique \""+themeIdee.theme+"\". Je te laisse compléter les autres informations.");
+                
                 var card = UtilsDialog.getLinkCard(
                     session,
                     'Portail Mobil\'idée',
-                    "Nouvelle Mobil\'idée",
-                    'http://mobilidees.mt.sncf.fr/#/propose'
+                    "Nouvelle Mobil\'idée avec le sujet : \""+themeIdee.theme+"\"",
+                    'http://mobilidees-dev.mt.sncf.fr/#/propose/'+themeIdee.theme
                 );
                 session.send(card);
 

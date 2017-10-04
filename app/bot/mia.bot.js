@@ -6,6 +6,7 @@ var TechnicalDialog = require('./dialogs/technical.dialog');
 var CreationDialog = require('./dialogs/creation.dialog');
 var DeploymentDialog = require('./dialogs/deployment.dialog');
 var WelcomeDialog = require('./dialogs/welcome.dialog');
+var AboutDialog = require('./dialogs/about.dialog');
 
 class MiaBot {
     
@@ -15,13 +16,31 @@ class MiaBot {
 
         this.connector = new builder.ChatConnector({ appId: 'aa8cbc27-5f99-431b-b14e-66bb5946b9e5', appPassword: 'hqbwfEpRb2fMDE5JBudS6V0' });
         this.bot = new builder.UniversalBot(this.connector);
+        
+        //Send welcome message before user ask
+        var bot = this.bot;
+        this.bot.on('conversationUpdate', function (message) {
+            if (message.membersAdded) {
+                message.membersAdded.forEach(function (identity) {
+                    if (identity.id === message.address.bot.id) {
+                        bot.send(new builder.Message()
+                            .address(message.address)
+                            .text("Bonjour je suis MIA (Mobil\'Idée Assistant)! \n\n Posez moi vos questions, je me ferai une joie de vous répondre !"));
+                    }
+                });
+            }
+        });
+
         this.intents = new builder.IntentDialog({ recognizers: [recognizer] });
         
         this.initDialogs();
+
     }
 
     initDialogs(){
+        
         this.bot.dialog('/', this.intents);
+
         new DefaultDialog(this.bot, this.intents);
         new ProcessDialog(this.bot, this.intents);
         new ProjectDialog(this.bot, this.intents);
@@ -29,6 +48,7 @@ class MiaBot {
         new CreationDialog(this.bot, this.intents);
         new WelcomeDialog(this.bot, this.intents);
         new DeploymentDialog(this.bot, this.intents);
+        new AboutDialog(this.bot, this.intents);
     }
 
     mount(){
