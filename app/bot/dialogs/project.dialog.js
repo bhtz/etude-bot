@@ -20,8 +20,8 @@ var quests = {  askForProjectName: [
                 projectDetailDialog: {
                     found: {
                         simple: [
-                            'J\'ai trouvé la référence [%s]!',
-                            'J\'ai identifié une mobil\'idée correspondant à vos citères [%s]'],
+                            'J\'ai trouvé une référence pour [%s]!',
+                            'J\'ai identifié une mobil\'idée correspondant à vos critères [%s]'],
                         multi: [
                             'J\'ai trouvé %s références qui correspondent à \'%s\':',
                             'J\'ai identifié %s références pour \'%s\':']
@@ -43,7 +43,9 @@ var quests = {  askForProjectName: [
                     choice: [
                         'Saisissez le numéro correspondant au projet que vous souhaitez consulter.',
                         'Quel est le numéro de la mobil\'idée que vous voulez voir?'],
-                    show: ['Voici le détail du projet du projet [%s]'],
+                    show: [
+                        'Voici le détail du projet [%s]',
+                        'Voici le détail du projet sélectionné [%s]'],
                     agree: [
                         'Comme vous voulez...',
                         'Comme vous le souhaitez...',
@@ -100,7 +102,7 @@ module.exports = class ProjectDialog {
     projectDetailDialog() {
         return [
             // >> Waterfall #1
-            (session) => {
+            (session, args, next) => {
                 // call mobilidees api to search project by title
                 this.dataService.getByTitle(session.userData.projet)
                 .then((data) => {
@@ -112,6 +114,7 @@ module.exports = class ProjectDialog {
                     if(project){
                         // Send project(s) list to user
                         this.sendProjects(session, project);
+                        next();
                     } else {
                         session.dialogData.no_result = true;
                         let text = this.getRandomText(quests.projectDetailDialog.notFound);
@@ -132,9 +135,13 @@ module.exports = class ProjectDialog {
                         next();
                     }
                 }else {
-                    let text = this.getRandomText(quests.projectDetailDialog.agree);
-                    session.send(text);
-                    session.endDialog();
+                    if(!session.dialogData.multi) {// if only one project, show its detail
+                        next();
+                    }else {
+                        let text = this.getRandomText(quests.projectDetailDialog.agree);
+                        session.send(text);
+                        session.endDialog();
+                    }
                 }
             },
 
@@ -296,8 +303,8 @@ module.exports = class ProjectDialog {
 
             session.dialogData.multi = false;
 
-            text = this.getRandomText(quests.projectDetailDialog.ask.simple);
-            builder.Prompts.confirm(session, text, {yes: 'Oui', no: 'Non'});
+            /*text = this.getRandomText(quests.projectDetailDialog.ask.simple);
+            builder.Prompts.confirm(session, text, {yes: 'Oui', no: 'Non'});*/
         }
     }
 
@@ -318,7 +325,7 @@ module.exports = class ProjectDialog {
             session,
             project.name,
             text,
-            'https://mobilidees.mt.sncf.fr/#/proposals/'+project.id
+            'https://mobilidees-dev.mt.sncf.fr/#/proposals/'+project.id
         );
         session.send(card);
     }
