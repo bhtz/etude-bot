@@ -21,7 +21,7 @@ module.exports = class DeploymentDialog {
                 var response = results.response.entity;
                 switch (response) {
                     case 'développement':
-                        session.send('En phase de développement, votre référent technique est habilité à déployer votre application sur la plateforme "DEVBOX".\n\nJe vous invite donc à vous rapprocher de votre référent technique.');
+                        session.send('En phase de développement, votre référent technique local est habilité à déployer votre application sur la plateforme "DEVBOX".\n\nJe vous invite donc à vous rapprocher de votre référent technique.');
                         session.send('Pour toute information complémentaire, n\'hésitez pas à contacter le support PMM.');
                         this.sendSupportCard(session);
                         break;
