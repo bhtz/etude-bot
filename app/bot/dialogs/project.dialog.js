@@ -26,10 +26,15 @@ var quests = {  askForProjectName: [
                             'J\'ai trouvé %s références qui correspondent à \'%s\':',
                             'J\'ai identifié %s références pour \'%s\':']
                     },
-                    notFound: [
-                        'Je n\'ai trouvé aucune référence correspondant à \'%s\'...',
-                        'Je n\'ai malheureusement pas trouvé de correspondance pour \'%s\'...',
-                        'Je ne trouve pas de mobil\'idée pertinente en rapport avec \'%s\''],
+                    notFound: {
+                        creation: [
+                            'Il n\'existe pas d\'idée en rapport avec le thème que vous avez saisi \'%s\'.'
+                        ],
+                        infos: [
+                            'Je n\'ai trouvé aucune référence correspondant à \'%s\'...',
+                            'Je n\'ai malheureusement pas trouvé de correspondance pour \'%s\'...',
+                            'Je ne trouve pas de mobil\'idée pertinente en rapport avec \'%s\'']
+                    },
                     ask: {
                         simple: [
                                     'Voulez-vous consulter le détail de ce projet?',
@@ -44,8 +49,8 @@ var quests = {  askForProjectName: [
                         'Saisissez le numéro correspondant au projet que vous souhaitez consulter.',
                         'Quel est le numéro de la mobil\'idée que vous voulez voir?'],
                     show: [
-                        'Voici le détail du projet [%s]',
-                        'Voici le détail du projet sélectionné [%s]'],
+                        'Voici le détail du projet **%s**',
+                        'Voici le détail du projet sélectionné **%s**'],
                     agree: [
                         'Comme vous voulez...',
                         'Comme vous le souhaitez...',
@@ -112,12 +117,18 @@ module.exports = class ProjectDialog {
 
                     // if project exists
                     if(project){
+                        session.userData.dontAsk = false;
                         // Send project(s) list to user
                         this.sendProjects(session, project);
                         next();
                     } else {
                         session.dialogData.no_result = true;
-                        let text = this.getRandomText(quests.projectDetailDialog.notFound);
+                        let rdmText = quests.projectDetailDialog.notFound.infos;
+                        if(session.userData.creationReferer){
+                            rdmText = quests.projectDetailDialog.notFound.creation;
+                            session.userData.dontAsk = true;
+                        }
+                        let text = this.getRandomText(rdmText);
                         session.send(util.format(text, session.userData.projet));
 
                         session.endDialog();
@@ -200,6 +211,7 @@ module.exports = class ProjectDialog {
         return [
             // >> Waterfall #1
             (session, args, next) => {
+                session.userData.creationReferer = false;
 
                 // Get project name
                 let result = null;
@@ -211,13 +223,14 @@ module.exports = class ProjectDialog {
                 // Prompt for projet
                 if(session.userData.projet) {
                     console.log('[DEBUG] There\'s a project in userData!');
+                    session.userData.creationReferer = true;
                     next();
                 }else if (!result) {
                     console.log('[DEBUG] There\'s not project in userData and no identify entity!');
                     session.beginDialog('askForProjectName');
                 } else {
                     console.log('[DEBUG] There\'s a project in entity!');
-                    session.userData.projet = result.entity
+                    session.userData.projet = result.entity;
                     next();
                 }
             },
@@ -243,6 +256,7 @@ module.exports = class ProjectDialog {
 
            // >> Waterfall #3
            (session, args, next) => {
+
                 // Ask for restart
                 if(!session.userData.dontAsk) {
                     session.beginDialog('askForRestart');
@@ -253,14 +267,18 @@ module.exports = class ProjectDialog {
 
            // >> Waterfall #4
            (session, args) => {
-               if(args.response || session.userData.dontAsk) {
+               let bRestart = (args.response || session.userData.dontAsk) && !session.userData.creationReferer;
+
+               if(bRestart) {
                     session.userData.projet = null;
                     // restart Main loop
                     session.replaceDialog("mainDialogInfos", { reprompt: true });
                } else {
                     // End of dialog
-                    let text = this.getRandomText(quests.projectDetailDialog.agree);
-                    session.send(text);
+                    if(!session.userData.creationReferer) {
+                        let text = this.getRandomText(quests.projectDetailDialog.agree);
+                        session.send(text);
+                    }
                     session.endDialog();
                }
            }
@@ -314,12 +332,12 @@ module.exports = class ProjectDialog {
      * @param {*} project 
      */
     sendProjectDetail(session, project) {
-        let text = this.getRandomText(quests.projectDetailDialog.show) + ':';
+        let text = this.getRandomText(quests.projectDetailDialog.show);
         session.send(util.format(text, project.name));
 
-        text = 'Description: ' + project.shortDescription + '\n\n';
-        text += 'Propriétaire de l\'idée: ' + project.user.firstName + ' ' + project.user.lastName + '\n\n';
-        text += 'Date de création de l\'idée: ' + dateFormat(project.creationDate, "dd/mm/yyyy hh:MM:ss");
+        text = '**Description:** ' + project.shortDescription + '\n\n';
+        text += '**Propriétaire de l\'idée:** ' + project.user.firstName + ' ' + project.user.lastName + '\n\n';
+        text += '**Date de création de l\'idée:** ' + dateFormat(project.creationDate, "dd/mm/yyyy hh:MM:ss");
 
         var card = UtilsDialog.getLinkCard(
             session,
