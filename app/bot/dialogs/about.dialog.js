@@ -13,8 +13,21 @@ module.exports = class AboutDialog {
     dialog() {
         return [
             (session, args, next) => {
-                session.send("Je suis MIA, je suis un robot qui pourra t'assister pour toutes tes recherches sur le processus Mobil'idées, sur les projets en cours, "+
-                    "sur tout besoin d'assistance dans tes développements.<br/> Comment puis je t'aider ?");
+                    //Consutruction du message
+                    var message = "Je suis **MIA** : un _tchatBot_ ou _chatBot_, ou encore un _agent Conversationnel_, c’est-à-dire un programme ";
+                    message = message +"informatique capable de simuler une conversation avec un ou plusieurs humains par échange vocal ou textuel. <br/> ";
+                    message = message +"Je peux t'aider sur les sujets relatifs à la Mobilité au Matériel, voici un petit panel de mes fonctionnalités <br/>";
+                    message = message +"* Informer  sur le processus Mobil'idées <br/>";
+                    message = message +"* Faciliter la création de Mobil'idées​<br/>";
+                    message = message +"* rechercher des informations sur une application ​<br/>";
+                    message = message +"* Rechercher des applications existantes sur un thème​<br/>";
+                    message = message +"* Orienter les développeurs ou créateurs d'idées<br/>";
+                    message = message +"* Aider les utilisateurs d'applications mobiles M​<br/>";
+                    message = message +"* Répondre à une question technique <br/>";
+                    message = message +"* Donner des informations sur les MatMobiles<br/>";
+                    message = message +"Comment puis je t'aider ?";
+
+                    session.send(message);
             }
         ];
     }
