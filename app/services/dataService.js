@@ -2,7 +2,12 @@ var _ = require('lodash');
 var util = require('util');
 var request = require('request-promise');
 
-var endPointBaseUrl = 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=%s';
+// Authentication
+var username = "miabot";
+var password = "rnE55V3q6OJcMni0mjYy";
+var auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+
+var endPointBaseUrl = 'https://portail1.api-np.sncf.fr/materiel/mobilidees/1.1/.json?__sequence=%s';
 
 // Test la présence de la variable d'environnement MIA_RUNTIME_ENV = 'DEV'
 if (process.env.MIA_RUNTIME_ENV) {
@@ -12,7 +17,7 @@ if (process.env.MIA_RUNTIME_ENV) {
         endPointBaseUrl = process.env.MIA_RUNTIME_BASEURL;
     } else {
         console.log('[DEBUG] MIA_RUNTIME_BASEURL is not set...');
-        endPointBaseUrl = 'https://portail3.api-np.sncf.fr/materiel/mobilidees/1.0/.json?__sequence=%s';
+        endPointBaseUrl = 'https://portail3.api-np.sncf.fr/materiel/mobilidees/1.1/.json?__sequence=%s';
     }
 
     console.log('[DEBUG] endPointBaseUrl: ' + endPointBaseUrl);
@@ -26,7 +31,8 @@ module.exports = class DataService {
         var opts = {
             uri: util.format(endPointBaseUrl, 'GetProject_Sequence'),
             qs: { id: id },
-            json: true
+            json: true,
+            headers : { "Authorization" : auth }
         }
         return request.get(opts);
     }
@@ -38,7 +44,8 @@ module.exports = class DataService {
                 projectRefId: id,
                 max: max,
                 cp: cp,
-                excludeMarkedOff: exclude
+                excludeMarkedOff: exclude,
+                headers : { "Authorization" : auth }
             },
             json: true
         }
@@ -49,7 +56,8 @@ module.exports = class DataService {
         var opts = {
             uri: util.format(endPointBaseUrl, 'SearchProjects_Sequence'),
             qs: { q: title },
-            json: true
+            json: true,
+            headers : { "Authorization" : auth }
         }
         return request.get(opts);
     }
@@ -63,7 +71,8 @@ module.exports = class DataService {
             method: 'POST',
             uri: util.format(endPointBaseUrl, 'UpdateMarkOffProject_Sequence'),
             body: { cp: cp, projectRefId: projectRefId, projectMatchId: projectMatchId, comment: comment, markoff: markoff },
-            json: true
+            json: true,
+            headers : { "Authorization" : auth }
         };
         return request.post(options);
     }
