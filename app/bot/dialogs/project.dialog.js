@@ -73,7 +73,6 @@ module.exports = class ProjectDialog {
 
         // Main dialog
         this.bot.dialog('mainDialogInfos', this.mainDialogInfos());
-        this.bot.dialog('mainDialogSearch', this.mainDialogSearch());
 
         // Sub dialogs
         this.bot.dialog('askForProjectName', this.askForProjectName());
@@ -82,7 +81,6 @@ module.exports = class ProjectDialog {
 
         // Main dialog start up
         this.intents.matches('project_informations', this.mainDialogInfos());
-        this.intents.matches('project_search', this.mainDialogSearch());
     }
 
     /**
@@ -190,20 +188,6 @@ module.exports = class ProjectDialog {
         ];
     }
 
-    /**
-     * Dialog: Main dialog informations
-     */
-    mainDialogSearch() {
-        return [
-            // >> Waterfall #1
-            (session) => {
-                session.send('Intention matché: project_search')
-            }
-        ];
-    }
-
-
-     
     /**
      * Dialog: Main dialog informations
      */
