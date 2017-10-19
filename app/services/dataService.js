@@ -55,11 +55,11 @@ module.exports = class DataService {
     getByTitle(title) {
         var opts = {
             uri: util.format(endPointBaseUrl, 'SearchProjects_Sequence'),
-            qs: { q: title },
+            qs: { q: encodeURIComponent(title) },
             json: true,
             headers : { "Authorization" : auth }
         }
-        return request.get(opts);
+        return request.post(opts);
     }
 
     getByKeyWord() {
