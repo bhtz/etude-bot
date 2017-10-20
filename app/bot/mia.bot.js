@@ -7,6 +7,7 @@ var CreationDialog = require('./dialogs/creation.dialog');
 var DeploymentDialog = require('./dialogs/deployment.dialog');
 var WelcomeDialog = require('./dialogs/welcome.dialog');
 var AboutDialog = require('./dialogs/about.dialog');
+var ByeDialog = require('./dialogs/bye.dialog');
 
 class MiaBot {
     
@@ -49,6 +50,7 @@ class MiaBot {
         new WelcomeDialog(this.bot, this.intents);
         new DeploymentDialog(this.bot, this.intents);
         new AboutDialog(this.bot, this.intents);
+        new ByeDialog(this.bot, this.intents);
     }
 
     mount(){

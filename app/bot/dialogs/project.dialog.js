@@ -147,9 +147,7 @@ module.exports = class ProjectDialog {
                     if(!session.dialogData.multi) {// if only one project, show its detail
                         next();
                     }else {
-                        let text = this.getRandomText(quests.projectDetailDialog.agree);
-                        session.send(text);
-                        session.endDialog();
+                        session.replaceDialog("mainDialogBye");
                     }
                 }
             },
@@ -190,13 +188,16 @@ module.exports = class ProjectDialog {
 
     expandEntity(session, args) {
         console.log("==== Start expandEntity");
-        
+        if(args.entities.length===0){
+            return null;
+        }
+
         args.entities[0].entity = session.message.text.substring(args.entities[0].startIndex, session.message.text.length);
         args.entities[0].endIndex = session.message.text.length;
 
         console.log("==== End expandEntity");
 
-        return session.message.text.substring(args.entities[0].startIndex, session.message.text.length);
+        return session.message.text.substring(args.entities[0].startIndex, args.entities[0].endIndex);
     }
 
     /**
@@ -212,7 +213,7 @@ module.exports = class ProjectDialog {
                 let result = null;
                 if (args) {
                     session.userData.projet = null;
-                    //this.expandEntity(session, args);
+                    this.expandEntity(session, args);
                     result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
 
                     console.log("======== ======== ======== ======== ======== ======== ======== ");
@@ -278,7 +279,7 @@ module.exports = class ProjectDialog {
                         let text = this.getRandomText(quests.projectDetailDialog.agree);
                         session.send(text);
                     }
-                    session.endDialog();
+                    session.replaceDialog("mainDialogBye");
                }
            }
         ];
