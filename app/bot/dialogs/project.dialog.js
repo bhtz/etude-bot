@@ -188,6 +188,17 @@ module.exports = class ProjectDialog {
         ];
     }
 
+    expandEntity(session, args) {
+        console.log("==== Start expandEntity");
+        
+        args.entities[0].entity = session.message.text.substring(args.entities[0].startIndex, session.message.text.length);
+        args.entities[0].endIndex = session.message.text.length;
+
+        console.log("==== End expandEntity");
+
+        return session.message.text.substring(args.entities[0].startIndex, session.message.text.length);
+    }
+
     /**
      * Dialog: Main dialog informations
      */
@@ -201,7 +212,11 @@ module.exports = class ProjectDialog {
                 let result = null;
                 if (args) {
                     session.userData.projet = null;
+                    this.expandEntity(session, args);
                     result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
+
+                    console.log("======== ======== ======== ======== ======== ======== ======== ");
+                    console.log(JSON.stringify(args.entities));
                 }
 
                 // Prompt for projet
@@ -327,7 +342,7 @@ module.exports = class ProjectDialog {
             session,
             project.name,
             text,
-            'https://mobilidees-dev.mt.sncf.fr/#/proposals/'+project.id
+            'http://mobilidees-dev.mt.sncf.fr/#/proposals/'+project.id
         );
         session.send(card);
     }

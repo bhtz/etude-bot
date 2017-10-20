@@ -31,7 +31,7 @@ module.exports = class DeploymentDialog {
                             session,
                             'Portail Mobil\'idées',
                             'Demande d\'assistance',
-                            'https://mobilidees.mt.sncf.fr/#/assistance'
+                            'http://mobilidees-dev.mt.sncf.fr/#/assistance'
                         );
                         session.send(card);
                         break;
