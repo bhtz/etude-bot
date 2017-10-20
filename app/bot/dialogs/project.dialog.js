@@ -188,7 +188,7 @@ module.exports = class ProjectDialog {
 
     expandEntity(session, args) {
         console.log("==== Start expandEntity");
-        if(args.entities.length===0){
+        if(!args.entities || args.entities.length===0){
             return null;
         }
 

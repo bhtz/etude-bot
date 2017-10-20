@@ -7,6 +7,7 @@ module.exports = class WelcomeDialog {
         constructor(bot, intents) {
             this.bot = bot;
             this.intents = intents;
+            this.dataService = new DataService();
 
             this.bot.dialog('mainDialogBye', this.mainDialogBye());
 
@@ -29,15 +30,28 @@ module.exports = class WelcomeDialog {
                 }
             },
             (session, args, next) => {
+                var satisfied = true;
+                var comment = null;
+
                 if(args.response) {
+                    satisfied = false;
+                    comment = args.response;
                     session.send(`Merci d'avoir pris le temps de me répondre :)`);
                 }
 
-                // TODO Mettre à jour l'avis de l'utilisateur
-                session.send(`N'hésitez pas à revenir discuter avec moi si vous avez d'autres questions.`);
+                this.dataService.createMiaSatisfaction(satisfied, comment)
+                .then((data) => {
+                    console.log("Creation successful!");
+                    session.send(`N'hésitez pas à revenir discuter avec moi si vous avez d'autres questions.`);
+                })
+                .catch((e) => {
+                    console.log("ERROR " + e);
+                });
+
                 session.endDialog();
             }];
         }
 
+        
     }
     

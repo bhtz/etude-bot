@@ -76,4 +76,15 @@ module.exports = class DataService {
         };
         return request.post(options);
     }
+
+    createMiaSatisfaction(satisfied, comment) {
+        var options = {
+            method: 'POST',
+            uri: util.format(endPointBaseUrl, 'CreateMiaSatisfaction_Sequence'),
+            body: { satisfied: satisfied, comment: comment },
+            json: true,
+            headers : { "Authorization" : auth }
+        };
+        return request.post(options);
+    }
 };
