@@ -212,7 +212,7 @@ module.exports = class ProjectDialog {
                 let result = null;
                 if (args) {
                     session.userData.projet = null;
-                    this.expandEntity(session, args);
+                    //this.expandEntity(session, args);
                     result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
 
                     console.log("======== ======== ======== ======== ======== ======== ======== ");
