@@ -128,6 +128,7 @@ module.exports = class ProjectDialog {
                         }
                         let text = this.getRandomText(rdmText);
                         session.send(util.format(text, session.userData.projet));
+                        session.userData.projet = null;
 
                         session.endDialog();
                     }
@@ -136,6 +137,7 @@ module.exports = class ProjectDialog {
 
             // >> Waterfall #2
             (session, params, next) => {
+
                 if(params.response){
                     if(session.dialogData.multi) {
                         let text = this.getRandomText(quests.projectDetailDialog.choice);
@@ -147,7 +149,11 @@ module.exports = class ProjectDialog {
                     if(!session.dialogData.multi) {// if only one project, show its detail
                         next();
                     }else {
-                        session.replaceDialog("mainDialogBye");
+                        //session.replaceDialog("mainDialogBye");
+                        let text = this.getRandomText(quests.projectDetailDialog.agree);
+                        session.send(text);
+
+                        session.endDialog();
                     }
                 }
             },
@@ -166,6 +172,7 @@ module.exports = class ProjectDialog {
                 }else{
                     this.sendProjectDetail(session, session.userData.currentProject);
                 }
+
                 session.endDialog();
             }
         ];
@@ -186,16 +193,18 @@ module.exports = class ProjectDialog {
         ];
     }
 
+    /**
+     * Function: extract full entity
+     * @param {*} session 
+     * @param {*} args 
+     */
     expandEntity(session, args) {
-        console.log("==== Start expandEntity");
         if(!args.entities || args.entities.length===0){
             return null;
         }
 
         args.entities[0].entity = session.message.text.substring(args.entities[0].startIndex, session.message.text.length);
         args.entities[0].endIndex = session.message.text.length;
-
-        console.log("==== End expandEntity");
 
         return session.message.text.substring(args.entities[0].startIndex, args.entities[0].endIndex);
     }
@@ -215,9 +224,6 @@ module.exports = class ProjectDialog {
                     session.userData.projet = null;
                     this.expandEntity(session, args);
                     result = builder.EntityRecognizer.findEntity(args.entities, 'Projet');
-
-                    console.log("======== ======== ======== ======== ======== ======== ======== ");
-                    console.log(JSON.stringify(args.entities));
                 }
 
                 // Prompt for projet
@@ -276,10 +282,14 @@ module.exports = class ProjectDialog {
                } else {
                     // End of dialog
                     if(!session.userData.creationReferer) {
+
                         let text = this.getRandomText(quests.projectDetailDialog.agree);
                         session.send(text);
+
+                        session.beginDialog("mainDialogBye");
+                    }else {
+                        session.endDialog();
                     }
-                    session.replaceDialog("mainDialogBye");
                }
            }
         ];
