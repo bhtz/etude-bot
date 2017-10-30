@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "serve": "set MIA_RUNTIME_ENV='DEV' && nodemon ./bin/www",
+    "serve": "nodemon ./bin/www",
+    "serve:local": "set MIA_RUNTIME_ENV='DEV' && nodemon ./bin/www",
     "test": "jshint ./app"
   },
   "repository": {
