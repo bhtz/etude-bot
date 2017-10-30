@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var util = require('util');
 var request = require('request-promise');
+var environment = require('../configs/environment.json');
 
 // Authentication
 var username = "miabot";

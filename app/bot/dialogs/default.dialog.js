@@ -32,7 +32,7 @@ module.exports = class DefaultDialog {
     }
 
     weitherCard(session) {
-        session.send(`Vous me faîtes un peu peur ... Voici une infos utile !`);
+        session.send(`Je ne connais pas bien ce sujet. Mais voici une infos utile !`);
         session.send(UtilsDialog.getLinkCardWithImage(
             session,
             'Météo du jour',
@@ -43,14 +43,14 @@ module.exports = class DefaultDialog {
     }
 
     noUnderstand(session) {
-        session.send(`Je ne vous comprend pas humain !`);
+        session.send(`C’est étrange, je n’ai trouvé aucune information correspondant à votre recherche. Pouvez-vous réessayer avec d’autres mots clés ?`);
     }
 
     noUnderstandBis(session) {
-        session.send(`Je ne vois pas ce que vous voulez dire, mais ça à l'air sympas !`);
+        session.send(`Désolé, je ne peux actuellement pas répondre à cette question. Puis-je faire autre chose pour vous ?`);
     }
 
     noUnderstandTier(session) { 
-        session.send(`Vous n\'êtes pas censé poser ce genre de questions à votre assistant.`);
+        session.send(`Je n’ai trouvé aucune correspondance. Pouvez-vous recommencer en utilisant des mots différents ou supplémentaires ?`);
     }
 }

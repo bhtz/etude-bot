@@ -1,0 +1,12 @@
+{
+    "dev": {
+        "username": "miabot",
+        "password":"rnE55V3q6OJcMni0mjYy",
+        "url": "https://portail1.api-np.sncf.fr/materiel/mobilidees/1.1/.json?__sequence=%s"
+    },
+    "prod": {
+        "username": "miabot",
+        "password":"rnE55V3q6OJcMni0mjYy",
+        "url": "https://portail3.api-np.sncf.fr/materiel/mobilidees/1.1/.json?__sequence=%s"
+    }
+}
