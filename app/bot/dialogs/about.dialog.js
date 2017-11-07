@@ -24,8 +24,9 @@ module.exports = class AboutDialog {
                     message = message +"* Orienter les développeurs ou créateurs d'idées<br/>";
                     message = message +"* Aider les utilisateurs d'applications mobiles M​<br/>";
                     message = message +"* Répondre à une question technique <br/>";
-                    message = message +"* Donner des informations sur les MatMobiles<br/>";
-                    message = message +"Comment puis je t'aider ?";
+                    message = message +"* Donner des informations sur les MatMobiles";
+                    
+                    message = message +"<br/>Comment puis je t'aider ?";
 
                     session.send(message);
             }

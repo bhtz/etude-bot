@@ -27,7 +27,7 @@ class MiaBot {
                     if (identity.id === message.address.bot.id) {
                         bot.send(new builder.Message()
                             .address(message.address)
-                            .text("Bonjour je suis MIA (Mobil\'Idée Assistant)! \n\n Posez moi vos questions, je me ferai une joie de vous répondre !"));
+                            .text(`Bonjour je suis **MIA** (**M**obil\'**I**dée **A**ssistant) ! \n\n Je suis là pour répondre à tes questions, tu peux par exemple me demander s'il existe un projet sur une idée/un thème, me demander de l'aide pour la conception d'une application et bien d'autres choses.\n\nComment puis je t'aider aujourd'hui ? Je me ferai une joie de vous répondre !`));
                     }
                 });
             }
