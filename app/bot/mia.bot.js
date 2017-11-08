@@ -27,7 +27,7 @@ class MiaBot {
                     if (identity.id === message.address.bot.id) {
                         bot.send(new builder.Message()
                             .address(message.address)
-                            .text(`Bonjour je suis **MIA** (**M**obil\'**I**dée **A**ssistant) ! \n\n Je suis là pour répondre à tes questions, tu peux par exemple me demander s'il existe un projet sur une idée/un thème, me demander de l'aide pour la conception d'une application et bien d'autres choses.\n\nComment puis je t'aider aujourd'hui ? Je me ferai une joie de vous répondre !`));
+                            .text(`Bonjour je suis **MIA** (**M**obil\'**I**dée **A**ssistant) ! \n\n Je suis là pour répondre à tes questions.\n\n---\nVoici des exemples de questions que l'on me pose souvent\n\n - _Je veux des infos sur le projet ..._ \n\n - _Je cherche des projets sur ..._\n\n - _Comment dévolopper mon idée ?_\n\n - _Je voudrais créer une application pour gérer ..._\n\n - _J'ai besoin de déployer une application_\n\n - _Comment proposer une idée ?_\n\n - _Je veux tester sur une MatMobile_\n\n ---\nComment puis je t'aider aujourd'hui ? Je me ferai une joie de te répondre !`));
                     }
                 });
             }
