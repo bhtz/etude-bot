@@ -15,8 +15,6 @@ module.exports = class DeploymentDialog {
         return [
             (session) => {
                 session.send('Le processus de déploiement d\'une application dépend de l\'environnement.');
-                session.send('toto');
-                session.sent('Localizer: ' + session.localizer);
                 builder.Prompts.choice(session, 'Quel environnement ciblez-vous ?', envs, { listStyle: builder.ListStyle.list });
             },
             (session, results) => {
