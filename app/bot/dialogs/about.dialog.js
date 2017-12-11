@@ -28,7 +28,8 @@ module.exports = class AboutDialog {
                     
                     message = message +"<br/>Comment puis je t'aider ?";
 
-                    session.send(message);
+                    //session.send(message);
+                    session.send(session.preferredLocale() );
             }
         ];
     }
