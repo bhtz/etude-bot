@@ -1,0 +1,55 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>botsncf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <link href="//webchat.botframework.com/css/botchat.css" rel="stylesheet" />
+    <link href="//webchat.botframework.com/css/botchat-fullwindow.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="BotChatElement"></div>
+    <script src="//webchat.botframework.com/scripts/botchat.js"></script>
+    <script>
+        var model = {
+  "userId": "D2lfmnCCiCs",
+  "userName": "You",
+  "botId": "botsncf",
+  "botIconUrl": "//bot-framework.azureedge.net/bot-icons-v1/botsncf_CA24AI4MA37i4kbDWmCQ99jHByMDmo6OU1Z4sf7tR3CxBKo.png",
+  "botName": "botsncf",
+  "secret": "yBPjyK1I3FI.cwA.ojM.XpLoBc7mZvnUYLa6D-lrGxNpFW00FPGpqrecf5zNCsI",
+  "iconUrl": "//bot-framework.azureedge.net/bot-icons-v1/botsncf_CA24AI4MA37i4kbDWmCQ99jHByMDmo6OU1Z4sf7tR3CxBKo.png",
+  "directLineUrl": "https://webchat.botframework.com/v3/directline",
+  "webSocketEnabled": "true",
+  "speechTokenEndpoint": "https://api.botframework.com/v3/speechtoken"
+};
+    </script>
+    <script>
+        BotChat.App({
+            directLine: {
+                secret: model.secret,
+                token: model.token,
+                domain: model.directLineUrl,
+                webSocket: true
+            },
+            user: { id: model.userId, name: model.userName },
+            bot: { id: model.botId, name: model.botName },
+            resize: 'window',
+            locale: 'fr'
+        }, document.getElementById("BotChatElement"));
+
+    </script>
+</body>
+</html>
